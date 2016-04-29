@@ -7,15 +7,20 @@
 
 module.exports = function(options) {
   return function(hook) {
+
+//    console.log("registrando venta 2 hook ");
+
     // The authenticated user
     const user = hook.params.user;
     // The actual message text
-    const text = hook.data.text
-      // Messages can't be longer than 400 characters
-      .substring(0, 400)
-      // Do some basic HTML escaping
-      .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-
+    const text = "";
+    /*
+          const text = hook.data.text
+          // Messages can't be longer than 400 characters
+          .substring(0, 400)
+          // Do some basic HTML escaping
+          .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+    */
     // Override the original data
     hook.data = {
       text,
@@ -24,5 +29,15 @@ module.exports = function(options) {
       // Add the current time via `getTime`
       createdAt: new Date().getTime()
     };
+//    console.log("registrando venta 3 hook ");
+
+    var numeroDeClics = user.numeroDeClics || 0;
+    numeroDeClics = numeroDeClics + 1;
+//    console.log("registrando venta 4 hook ");
+//    console.log("registrando venta 4:1" + hook.params.user);
+
+    hook.app.service('users').patch(user._id,{numeroDeClics : numeroDeClics});
+
+//    console.log("registrando venta 5 hook create usuario");
   };
 };

@@ -35,23 +35,40 @@ const ComposeMessage = React.createClass({
 
   render() {
     return <form className="flex flex-row flex-space-between" onSubmit={this.sendMessage}>
-      <input type="text" name="text" className="flex flex-1"
+      {/*
+        <input type="text" name="text" className="flex flex-1"
         value={this.state.text} onChange={this.updateText} />
+      */}
       <button className="button-primary" type="submit">Send</button>
     </form>;
   }
 });
 
 const UserList = React.createClass({
+  getInitialState() {
+    return { text: new Date() };
+  },
   logout() {
     app.logout().then(() => window.location.href = '/login.html');
   },
 
+  registrarVenta(ev) {
+//  	  console.log("registrando venta 1");
+    app.service('messages').create(this.state);
+//    	  console.log("registrando venta 2");
+
+    this.setState({ text: new Date() });
+//    	  console.log("registrando venta 3");
+    ev.preventDefault();
+//    renderComponent();
+//this.forceUpdate();
+//  console.log("vamos");
+  },
+
   render() {
     const users = this.props.users;
-
-    return <aside className="sidebar col col-3 flex flex-column flex-space-between">
-      <header className="flex flex-row flex-center">
+    return <div>
+    <header className="flex flex-row flex-center">
         <h4 className="font-300 text-center">
           <span className="font-600 online-count">{users.length}</span> users
         </h4>
@@ -62,15 +79,18 @@ const UserList = React.createClass({
           <li>
             <a className="block relative" href="#">
               <img src={user.avatar || PLACEHOLDER} className="avatar" />
-              <span className="absolute username">{user.email}</span>
+              <span className="absolute username">{user.numeroDeClics} - {user.email}</span>
             </a>
           </li>
         )}
       </ul>
       <footer className="flex flex-row flex-center">
-        <a href="#" className="logout button button-primary" onClick={this.logout}>Sign Out</a>
+        {/*<a href="#" className="logout button button-primary" onClick={this.logout}>Sign Out</a>*/}
+        <form className="flex flex-row flex-space-between" onSubmit={this.registrarVenta}>
+         <button className="button-primary" type="submit">Send</button>
+        </form>
       </footer>
-    </aside>;
+      </div>;
   }
 });
 
@@ -110,8 +130,8 @@ const ChatApp = React.createClass({
   },
 
   componentDidUpdate: function() {
-    const node = this.getDOMNode().querySelector('.chat');
-    node.scrollTop = node.scrollHeight - node.clientHeight;
+//    const node = this.getDOMNode().querySelector('.chat');
+//    node.scrollTop = node.scrollHeight - node.clientHeight;
   },
 
   componentDidMount() {
@@ -133,18 +153,19 @@ const ChatApp = React.createClass({
       }
     }).then(page => this.setState({ messages: page.data.reverse() }));
     // Listen to newly created messages
-    messageService.on('created', message => this.setState({
-      messages: this.state.messages.concat(message)
-    }));
+    messageService.on('created', () => 
+            userService.find().then(page => this.setState({ users: page.data })));
   },
 
   render() {
-    return <div className="flex flex-row flex-1 clear">
-      <UserList users={this.state.users} />
-      <div className="flex flex-column col col-9">
-        <MessageList users={this.state.users} messages={this.state.messages} />
-        <ComposeMessage />
-      </div>
+    return <div id="userListDiv" className="flex flex-row flex-1 clear">
+        <UserList users={this.state.users} />
+        {/*
+        <div className="flex flex-column col col-9">
+          <MessageList users={this.state.users} messages={this.state.messages} />
+          <ComposeMessage />
+        </div>
+        */}
     </div>
   }
 });
