@@ -1754,3 +1754,7 @@ input::-moz-focus-inner {
     page-break-after: avoid; }
   abbr[title]:after {
     content: " (" attr(title) ")"; } }
+
+.noBreakClass{
+    white-space: nowrap;
+}
