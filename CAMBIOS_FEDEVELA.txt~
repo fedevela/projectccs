@@ -1,4 +1,5 @@
 
+git clone https://github.com/feathersjs/feathers-chat.git 
 
 npm install mongodb feathers-mongodb --save
 
