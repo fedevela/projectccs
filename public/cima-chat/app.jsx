@@ -1,6 +1,6 @@
 // A placeholder image if the user does not have one
 const PLACEHOLDER = 'https://placeimg.com/60/60/people';
-// An anonymous user if the message does not have that information
+// An anonymous user if the servicioRegistroVentas does not have that information
 const dummyUser = {
   avatar: PLACEHOLDER,
   email: 'Anonymous'
@@ -14,7 +14,7 @@ const app = feathers().configure(feathers.socketio(socket)).configure(feathers.h
 // Use localStorage to store our login token
   .configure(feathers.authentication({storage: window.localStorage}));
 
-const ComposeMessage = React.createClass({
+const ComposeRegistroVentas = React.createClass({
   getInitialState() {
     return {text: ''};
   },
@@ -23,13 +23,13 @@ const ComposeMessage = React.createClass({
     this.setState({text: ev.target.value});
   },
 
-  sendMessage(ev) {
-    app.service('messages').create(this.state).then(() => this.setState({text: ''}))
+  sendRegistroVentas(ev) {
+    app.service('servicioRegistroVentas').create(this.state).then(() => this.setState({text: ''}))
     ev.preventDefault();
   },
 
   render() {
-    return <form className="flex flex-row flex-space-between" onSubmit={this.sendMessage}>
+    return <form className="flex flex-row flex-space-between" onSubmit={this.sendRegistroVentas}>
       {/*
         <input type="text" name="text" className="flex flex-1"
         value={this.state.text} onChange={this.updateText} />
@@ -50,7 +50,7 @@ const UserList = React.createClass({
 
   registrarVenta(ev) {
     //  	  console.log("registrando venta 1");
-    app.service('messages').create(this.state);
+    app.service('servicioRegistroVentas').create(this.state);
     //    	  console.log("registrando venta 2");
 
 //    this.setState({text: new Date()});
@@ -90,10 +90,10 @@ const UserList = React.createClass({
   }
 });
 
-const MessageList = React.createClass({
-  renderMessage(message) {
-    const sender = typeof message.sentBy === 'object'
-      ? message.sentBy
+const RegistroVentasList = React.createClass({
+  renderRegistroVenta(registroVenta) {
+    const sender = typeof registroVenta.sentBy === 'object'
+      ? registroVenta.sentBy
       : dummyUser;
 
     return <div className="message flex flex-row">
@@ -102,11 +102,11 @@ const MessageList = React.createClass({
         <p className="message-header">
           <span className="username font-600">{sender.email}</span>
           <span className="sent-date font-300">
-            {moment(message.createdAt).format('MMM Do, hh:mm:ss')}
+            {moment(registroVenta.createdAt).format('MMM Do, hh:mm:ss')}
           </span>
         </p>
         <p className="message-content font-300">
-          {message.text}
+          {registroVenta.text}
         </p>
       </div>
     </div>;
@@ -114,14 +114,14 @@ const MessageList = React.createClass({
 
   render() {
     return <main className="chat flex flex-column flex-1 clear">
-      {this.props.messages.map(this.renderMessage)}
+      {this.props.registroVentas.map(this.renderRegistroVenta)}
     </main>;
   }
 });
 
 const ChatApp = React.createClass({
   getInitialState() {
-    return {users: [], messages: []};
+    return {users: [], registroVentas: []};
   },
 
   componentDidUpdate: function() {
@@ -131,7 +131,7 @@ const ChatApp = React.createClass({
 
   componentDidMount() {
     const userService = app.service('users');
-    const messageService = app.service('messages');
+    const servicioRegistroVentas = app.service('servicioRegistroVentas');
 
     // Find all users initially
     userService.find({
@@ -144,19 +144,19 @@ const ChatApp = React.createClass({
     // Listen to new users so we can show them in real-time
     userService.on('created', user => this.setState({users: this.state.users.concat(user)}));
 
-    // Find the last 10 messages
-    messageService.find({
+    // Find the last 10 servicioRegistroVentas
+    servicioRegistroVentas.find({
       query: {
         $sort: {
           createdAt: -1
         },
         $limit: this.props.limit || 10
       }
-    }).then(page => this.setState({messages: page.data.reverse()}));
+    }).then(page => this.setState({registroVentas: page.data.reverse()}));
 
 
-    // Listen to newly created messages
-    messageService.on('created', () => userService.find({
+    // Listen to newly created registroVentas
+    servicioRegistroVentas.on('created', () => userService.find({
       query: {
         $sort: {
           numeroDeClics: -1
@@ -167,12 +167,7 @@ const ChatApp = React.createClass({
 
   render() {
     return <div id="userListDiv" className="flex flex-row flex-1 clear">
-      <UserList users={this.state.users}/> {/*
-        <div className="flex flex-column col col-9">
-          <MessageList users={this.state.users} messages={this.state.messages} />
-          <ComposeMessage />
-        </div>
-        */}
+      <UserList users={this.state.users}/>
     </div>
   }
 });

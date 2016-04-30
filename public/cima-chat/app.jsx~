@@ -10,26 +10,21 @@ const dummyUser = {
 const socket = io();
 // Initialize our Feathers client application through Socket.io
 // with hooks and authentication.
-const app = feathers()
-  .configure(feathers.socketio(socket))
-  .configure(feathers.hooks())
-  // Use localStorage to store our login token
-  .configure(feathers.authentication({
-    storage: window.localStorage
-  }));
+const app = feathers().configure(feathers.socketio(socket)).configure(feathers.hooks())
+// Use localStorage to store our login token
+  .configure(feathers.authentication({storage: window.localStorage}));
 
 const ComposeMessage = React.createClass({
   getInitialState() {
-    return { text: '' };
+    return {text: ''};
   },
 
   updateText(ev) {
-    this.setState({ text: ev.target.value });
+    this.setState({text: ev.target.value});
   },
 
   sendMessage(ev) {
-    app.service('messages').create(this.state)
-      .then(() => this.setState({ text: '' }))
+    app.service('messages').create(this.state).then(() => this.setState({text: ''}))
     ev.preventDefault();
   },
 
@@ -45,46 +40,64 @@ const ComposeMessage = React.createClass({
 });
 
 const UserList = React.createClass({
+  getInitialState() {
+//    return {text: new Date()};
+    return {};
+  },
   logout() {
     app.logout().then(() => window.location.href = '/login.html');
   },
 
+  registrarVenta(ev) {
+    //  	  console.log("registrando venta 1");
+    app.service('messages').create(this.state);
+    //    	  console.log("registrando venta 2");
+
+//    this.setState({text: new Date()});
+    //    	  console.log("registrando venta 3");
+    ev.preventDefault();
+    //    renderComponent();
+    //this.forceUpdate();
+    //  console.log("vamos");
+  },
+
   render() {
     const users = this.props.users;
-
     return <div>
-    <header className="flex flex-row flex-center">
+      <header className="flex flex-row flex-center">
         <h4 className="font-300 text-center">
-          <span className="font-600 online-count">{users.length}</span> users
+          <span className="font-600 online-count">{users.length}</span>
+          users
         </h4>
       </header>
 
       <ul className="flex flex-column flex-1 list-unstyled user-list">
-        {users.map(user =>
-          <li>
-            <a className="block relative" href="#">
-              <img src={user.avatar || PLACEHOLDER} className="avatar" />
-              <span className="absolute username">{user.email}</span>
-            </a>
-          </li>
-        )}
+        {users.map(user => <li>
+          <a className="block relative" href="#">
+            <img src={user.avatar || PLACEHOLDER} className="avatar"/>
+            <span className="absolute username noBreakClass">{user.numeroDeClics}
+              - {user.email}</span>
+          </a>
+        </li>)}
       </ul>
       <footer className="flex flex-row flex-center">
-        <a href="#" className="logout button button-primary" onClick={this.logout}>Sign Out</a>
-        <form className="flex flex-row flex-space-between" onSubmit={this.sendMessage}>
-         <button className="button-primary" type="submit">Send</button>
+        {/*<a href="#" className="logout button button-primary" onClick={this.logout}>Sign Out</a>*/}
+        <form className="flex flex-row flex-space-between" onSubmit={this.registrarVenta}>
+          <button className="button-primary" type="submit">Send</button>
         </form>
       </footer>
-      </div>;
+    </div>;
   }
 });
 
 const MessageList = React.createClass({
   renderMessage(message) {
-    const sender = typeof message.sentBy === 'object' ? message.sentBy : dummyUser;
+    const sender = typeof message.sentBy === 'object'
+      ? message.sentBy
+      : dummyUser;
 
     return <div className="message flex flex-row">
-      <img src={sender.avatar || PLACEHOLDER} alt={sender.email} className="avatar" />
+      <img src={sender.avatar || PLACEHOLDER} alt={sender.email} className="avatar"/>
       <div className="message-wrapper">
         <p className="message-header">
           <span className="username font-600">{sender.email}</span>
@@ -108,15 +121,12 @@ const MessageList = React.createClass({
 
 const ChatApp = React.createClass({
   getInitialState() {
-    return {
-      users: [],
-      messages: []
-    };
+    return {users: [], messages: []};
   },
 
   componentDidUpdate: function() {
-    const node = this.getDOMNode().querySelector('.chat');
-    node.scrollTop = node.scrollHeight - node.clientHeight;
+    //    const node = this.getDOMNode().querySelector('.chat');
+    //    node.scrollTop = node.scrollHeight - node.clientHeight;
   },
 
   componentDidMount() {
@@ -124,29 +134,40 @@ const ChatApp = React.createClass({
     const messageService = app.service('messages');
 
     // Find all users initially
-    userService.find().then(page => this.setState({ users: page.data }));
+    userService.find({
+      query: {
+        $sort: {
+          numeroDeClics: -1
+        }
+      }
+    }).then(page => this.setState({users: page.data}));
     // Listen to new users so we can show them in real-time
-    userService.on('created', user => this.setState({
-      users: this.state.users.concat(user)
-    }));
+    userService.on('created', user => this.setState({users: this.state.users.concat(user)}));
 
     // Find the last 10 messages
     messageService.find({
       query: {
-        $sort: { createdAt: -1 },
+        $sort: {
+          createdAt: -1
+        },
         $limit: this.props.limit || 10
       }
-    }).then(page => this.setState({ messages: page.data.reverse() }));
+    }).then(page => this.setState({messages: page.data.reverse()}));
+
+
     // Listen to newly created messages
-    messageService.on('created', message => this.setState({
-      messages: this.state.messages.concat(message)
-    }));
+    messageService.on('created', () => userService.find({
+      query: {
+        $sort: {
+          numeroDeClics: -1
+        }
+      }
+    }).then(page => this.setState({users: page.data})));
   },
 
   render() {
-    return <div className="flex flex-row flex-1 clear">
-        <UserList users={this.state.users} />
-        {/*
+    return <div id="userListDiv" className="flex flex-row flex-1 clear">
+      <UserList users={this.state.users}/> {/*
         <div className="flex flex-column col col-9">
           <MessageList users={this.state.users} messages={this.state.messages} />
           <ComposeMessage />
@@ -157,18 +178,19 @@ const ChatApp = React.createClass({
 });
 
 app.authenticate().then(() => {
-  ReactDOM.render(<div id="app" className="flex flex-column">
+  ReactDOM.render(
+    <div id="app" className="flex flex-column">
     <header className="title-bar flex flex-row flex-center">
       <div className="title-wrapper block center-element">
-        <img className="logo" src="http://feathersjs.com/img/feathers-logo-wide.png" alt="Feathers Logo" />
+        <img className="logo" src="http://feathersjs.com/img/feathers-logo-wide.png" alt="Feathers Logo"/>
         <span className="title">Chat</span>
       </div>
     </header>
 
-    <ChatApp />
+    <ChatApp/>
   </div>, document.body);
 }).catch(error => {
-  if(error.code === 401) {
+  if (error.code === 401) {
     window.location.href = '/login.html'
   }
 

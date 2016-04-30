@@ -1,9 +1,9 @@
 'use strict';
 
 const assert = require('assert');
-const process = require('../../../../src/services/message/hooks/process.js');
+const process = require('../../../../src/services/servicioRegistroVentas/hooks/process.js');
 
-describe('message process hook', () => {
+describe('servicioRegistroVentas process hook', () => {
   it('returns a function', () => {
     var hook = process();
     assert.equal(typeof hook, 'function');
