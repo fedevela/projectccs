@@ -1,8 +1,0 @@
-
-git clone https://github.com/feathersjs/feathers-chat.git 
-
-npm install mongodb feathers-mongodb --save
-
-
-
-{/*<aside className="sidebar col col-3 flex flex-column flex-space-between">*/}    {/*</aside>*/}
