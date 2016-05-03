@@ -45,7 +45,7 @@ const Button = require('react-toolbox/lib/button');
 const CustomButton = () => (
   <Button label="Hello world" raised accent />
 );
-*/}
+*/}    
 
 
 // A placeholder image if the user does not have one
@@ -79,12 +79,12 @@ const ComposeRegistroVentas = React.createClass({
   },
 
   render() {
-    return <form onSubmit={this.sendRegistroVentas}>
+    return <form className="flex flex-row flex-space-between" onSubmit={this.sendRegistroVentas}>
       {/*
         <input type="text" name="text" className="flex flex-1"
         value={this.state.text} onChange={this.updateText} />
       */}
-      <button type="submit">Send</button>
+      <button className="button-primary" type="submit">Send</button>
     </form>;
   }
 });
@@ -114,24 +114,28 @@ const UserList = React.createClass({
   render() {
     const users = this.props.users;
     return <div>
-      <header>
-        <h4>
-          <span>{users.length}</span> users
+      <header className="flex flex-row flex-center">
+        <h4 className="font-300 text-center">
+          <span className="font-600 online-count">{users.length}</span>
+          users
         </h4>
       </header>
-      <ReactBootstrap.ListGroup componentClass="ul">
-        {users.map(user =>
-          <ReactBootstrap.ListGroupItem>
-          <img src={user.avatar || PLACEHOLDER} className="avatar"/> {user.email} : {user.numeroDeClics} Ventas
-          </ReactBootstrap.ListGroupItem>
-        )}
-      </ReactBootstrap.ListGroup>
-      <footer>
-          <ReactBootstrap.Button
-              bsStyle="primary"
-              onClick={this.registrarVenta}>
-              Registrar Venta
-            </ReactBootstrap.Button>
+
+      <ul className="flex flex-column flex-1 list-unstyled user-list">
+        {users.map(user => <li>
+          <a className="block relative" href="#">
+            <img src={user.avatar || PLACEHOLDER} className="avatar"/>
+            <span className="absolute username noBreakClass">{user.numeroDeClics}
+              - {user.email}</span>
+          </a>
+        </li>)}
+      </ul>
+      <footer className="flex flex-row flex-center">
+        {/*<a href="#" className="logout button button-primary" onClick={this.logout}>Sign Out</a>*/}
+        <form className="flex flex-row flex-space-between" onSubmit={this.registrarVenta}>
+          <button className="button-primary" type="submit">Send</button>
+      <AlertDismissable />
+        </form>
       </footer>
     </div>;
   }
@@ -143,16 +147,16 @@ const RegistroVentasList = React.createClass({
       ? registroVenta.sentBy
       : dummyUser;
 
-    return <div>
-      <img src={sender.avatar || PLACEHOLDER} alt={sender.email}/>
-      <div>
-        <p>
-          <span>{sender.email}</span>
-          <span>
+    return <div className="message flex flex-row">
+      <img src={sender.avatar || PLACEHOLDER} alt={sender.email} className="avatar"/>
+      <div className="message-wrapper">
+        <p className="message-header">
+          <span className="username font-600">{sender.email}</span>
+          <span className="sent-date font-300">
             {moment(registroVenta.createdAt).format('MMM Do, hh:mm:ss')}
           </span>
         </p>
-        <p>
+        <p className="message-content font-300">
           {registroVenta.text}
         </p>
       </div>
@@ -160,7 +164,7 @@ const RegistroVentasList = React.createClass({
   },
 
   render() {
-    return <main>
+    return <main className="chat flex flex-column flex-1 clear">
       {this.props.registroVentas.map(this.renderRegistroVenta)}
     </main>;
   }
@@ -213,16 +217,19 @@ const ChatApp = React.createClass({
       }
     }).then(page => this.setState({users: page.data})));
   },
-
+  
   render() {
-    return  <ReactBootstrap.Tabs defaultActiveKey={1} id="uncontrolled-tab-example">
-    <ReactBootstrap.Tab eventKey={1} title="Ranking">
-        <UserList users={this.state.users}/>
-    </ReactBootstrap.Tab>
+    return  <ReactBootstrap.Tabs defaultActiveKey={2} id="uncontrolled-tab-example">
+    <ReactBootstrap.Tab eventKey={1} title="Tab 1">Tab 1 content</ReactBootstrap.Tab>
     <ReactBootstrap.Tab eventKey={2} title="Tab 2">Tab 2 content</ReactBootstrap.Tab>
     <ReactBootstrap.Tab eventKey={3} title="Tab 3" disabled>Tab 3 content</ReactBootstrap.Tab>
-    <ReactBootstrap.Tab eventKey={4} title="Tab 4" disabled>Tab 4 content</ReactBootstrap.Tab>
   </ReactBootstrap.Tabs>
+ 
+    {/*
+    <div id="userListDiv" className="flex flex-row flex-1 clear">
+      <UserList users={this.state.users}/>
+    </div>
+    */}
   }
 });
 
@@ -237,7 +244,7 @@ app.authenticate().then(() => {
       </div>
     </header>
     */}
-    <ReactBootstrap.PageHeader>Cardif Cima <br/> <small>Eslogan</small></ReactBootstrap.PageHeader>
+    <ReactBootstrap.PageHeader>Cardif Cima<br/><small>Eslogan</small></ReactBootstrap.PageHeader>
     <ChatApp/>
   </div>
   , document.body);
