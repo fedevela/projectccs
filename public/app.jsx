@@ -116,26 +116,22 @@ const UserList = React.createClass({
     return <div>
       <header>
         <h4>
-          <span>{users.length}</span>
-          users
+          <span>{users.length}</span> users
         </h4>
       </header>
-
-      <ul className="flex flex-column flex-1 list-unstyled user-list">
-        {users.map(user => <li>
-          <a className="block relative" href="#">
-            <img src={user.avatar || PLACEHOLDER} className="avatar"/>
-            <span className="absolute username noBreakClass">{user.numeroDeClics}
-              - {user.email}</span>
-          </a>
-        </li>)}
-      </ul>
+      <ReactBootstrap.ListGroup componentClass="ul">
+        {users.map(user =>
+          <ReactBootstrap.ListGroupItem>
+          <img src={user.avatar || PLACEHOLDER} className="avatar"/> {user.email} : {user.numeroDeClics} Ventas
+          </ReactBootstrap.ListGroupItem>
+        )}
+      </ReactBootstrap.ListGroup>
       <footer>
-        {/*<a href="#" className="logout button button-primary" onClick={this.logout}>Sign Out</a>*/}
-        <form onSubmit={this.registrarVenta}>
-          <button type="submit">Send</button>
-      <AlertDismissable />
-        </form>
+          <ReactBootstrap.Button
+              bsStyle="primary"
+              onClick={this.registrarVenta}>
+              Registrar Venta
+            </ReactBootstrap.Button>
       </footer>
     </div>;
   }
@@ -225,6 +221,7 @@ const ChatApp = React.createClass({
     </ReactBootstrap.Tab>
     <ReactBootstrap.Tab eventKey={2} title="Tab 2">Tab 2 content</ReactBootstrap.Tab>
     <ReactBootstrap.Tab eventKey={3} title="Tab 3" disabled>Tab 3 content</ReactBootstrap.Tab>
+    <ReactBootstrap.Tab eventKey={4} title="Tab 4" disabled>Tab 4 content</ReactBootstrap.Tab>
   </ReactBootstrap.Tabs>
   }
 });
