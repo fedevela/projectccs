@@ -9,6 +9,8 @@ import socketio from 'feathers-socketio/client';
 import localstorage from 'feathers-localstorage';
 import authentication from 'feathers-authentication/client';
 
+import FlipMove from 'react-flip-move';
+
 import PageHeader from 'react-bootstrap/lib/PageHeader';
 import Tab from 'react-bootstrap/lib/Tab';
 import Tabs from 'react-bootstrap/lib/Tabs';
@@ -41,11 +43,12 @@ var UserList = React.createClass({
         </Button>
       </header>
       <ListGroup componentClass="ul">
-        {users.map(user => <ListGroupItem key={user._id}>
-          <img src={user.avatar || PLACEHOLDER} className="avatar"/> {user.email}
-          : {user.numeroDeClics}
-          Ventas
-        </ListGroupItem>)}
+        <FlipMove>
+            {users.map(user => <ListGroupItem key={user._id}>
+                {user.email} : {user.numeroDeClics}
+              Ventas
+            </ListGroupItem>)}
+        </FlipMove>
       </ListGroup>
     </div>;
   }
@@ -123,11 +126,9 @@ const ChatApp = React.createClass({
 app.authenticate().then(() => {
   ReactDOM.render(
     <div id="app">
-    <PageHeader>Cardif CIMA<br/>
-    {/*
-      <small>Eslogan</small><br/>
-      */}
-      <LogoutButton/>
+    <PageHeader>
+        Cardif CIMA<br/>
+        <LogoutButton/>
     </PageHeader>
     <ChatApp/>
   </div>, document.querySelector('#mainAppContainer'));
