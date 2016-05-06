@@ -3,6 +3,7 @@ var UglifyJsPlugin = webpack.optimize.UglifyJsPlugin;
 var env = process.env.WEBPACK_ENV;
 //var WebpackDevServer = require('webpack-dev-server');
 var path = require('path');
+//require('file?name=[name].[ext]!../index.html');
 
 var appName = 'CardifCIMAServer';
 var host = '0.0.0.0';
