@@ -30,11 +30,15 @@ var config = {
     loaders: [
       {
         test: /(\.jsx|\.js)$/,
-        loader: 'babel',
-        exclude: /(node_modules|bower_components)/,
-        query: {
-          presets: ['react', 'es2015']
-        }
+        loaders:[ 
+            'babel?presets[]=react,presets[]=es2015',
+//            'jsx-loader?insertPragma=React.DOM&harmony'
+            'jsx-loader?harmony'
+        ],
+        exclude: /(node_modules|bower_components)///,
+//        query: {
+//          presets: ['react', 'es2015']
+//        }
       }
     ]
   },

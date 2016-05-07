@@ -1,30 +1,30 @@
 'use strict';
 
-import React from 'react';
-import ReactDOM from 'react-dom';
-import io from 'socket.io-client';
-import feathers from 'feathers/client';
-import hooks from 'feathers-hooks';
-import socketio from 'feathers-socketio/client';
-import localstorage from 'feathers-localstorage';
-import authentication from 'feathers-authentication/client';
-import moment from 'moment';
+var React = require('react');
+var ReactDOM = require('react-dom');
+var io = require('socket.io-client');
+var feathers = require('feathers/client');
+var hooks = require('feathers-hooks');
+var socketio = require('feathers-socketio/client');
+var localstorage = require('feathers-localstorage');
+var authentication = require('feathers-authentication/client');
+var moment = require('moment');
 
-import FlipMove from 'react-flip-move';
+var FlipMove = require('react-flip-move');
 
-import PageHeader from 'react-bootstrap/lib/PageHeader';
-import Tab from 'react-bootstrap/lib/Tab';
-import Tabs from 'react-bootstrap/lib/Tabs';
-import ListGroup from 'react-bootstrap/lib/ListGroup';
-import FormGroup from 'react-bootstrap/lib/FormGroup';
-import FormControl from 'react-bootstrap/lib/FormControl';
-import ListGroupItem from 'react-bootstrap/lib/ListGroupItem';
-import Button from 'react-bootstrap/lib/Button';
-import Glyphicon from 'react-bootstrap/lib/Glyphicon';
-import ControlLabel from 'react-bootstrap/lib/ControlLabel';
-import Grid from 'react-bootstrap/lib/Grid';
-import Row from 'react-bootstrap/lib/Row';
-import Col from 'react-bootstrap/lib/Col';
+var PageHeader = require('react-bootstrap/lib/PageHeader');
+var Tab = require('react-bootstrap/lib/Tab');
+var Tabs = require('react-bootstrap/lib/Tabs');
+var ListGroup = require('react-bootstrap/lib/ListGroup');
+var FormGroup = require('react-bootstrap/lib/FormGroup');
+var FormControl = require('react-bootstrap/lib/FormControl');
+var ListGroupItem = require('react-bootstrap/lib/ListGroupItem');
+var Button = require('react-bootstrap/lib/Button');
+var Glyphicon = require('react-bootstrap/lib/Glyphicon');
+var ControlLabel = require('react-bootstrap/lib/ControlLabel');
+var Grid = require('react-bootstrap/lib/Grid');
+var Row = require('react-bootstrap/lib/Row');
+var Col = require('react-bootstrap/lib/Col');
 
 const socket = io('http://localhost:3030/');
 
