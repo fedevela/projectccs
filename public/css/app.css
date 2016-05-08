@@ -5,3 +5,11 @@
 .jsContentTest {
   background-color: yellow;
 }
+
+#LogoutButtonID {
+  float: right;
+}
+
+.nav>li>a {
+    padding: 3px 5px;
+}

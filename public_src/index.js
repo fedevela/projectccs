@@ -162,14 +162,48 @@ const LogoutButton = React.createClass({
   },
 
   render() {
-    return <Button onClick={this.logout} bsSize="small" bsStyle="warning">
-      {/*
+    return <Button onClick={this.logout} bsSize="small" bsStyle="danger" id="LogoutButtonID">
+      {/* @TODO hacer funcionar los Glyphicon
                   <Glyphicon glyph="close-circle" />
                   */}
       Cerrar
     </Button>
   }
 });
+
+const IndexPage = React.createClass({
+  render() {
+    return (
+      <Well bsSize="large">Look I'm in a large well!</Well>
+    );
+  }
+});
+
+//const LoginForm = React.createClass({
+//  render() {
+//    return (
+//      <form onSubmit={this.sendMessage}>
+//        <FormGroup controlId="formMessages">
+//          <ControlLabel>Mensaje</ControlLabel>
+//
+//          <Grid>
+//            <Row>
+//              <Col xs={8} md={4}>
+//                <FormControl type="text" value={this.state.value} placeholder="Escribe tu mensaje..." onChange={this.handleChange}/>
+//              </Col>
+//              <Col xs={2} md={1}>
+//                <Button bsStyle="primary" type="submit">Enviar</Button>
+//              </Col>
+//            </Row>
+//          </Grid>
+//          {/*
+//          <HelpBlock>Validation is based on string length.</HelpBlock>
+//            */}
+//        </FormGroup>
+//      </form>
+//    );
+//  }
+//});
 
 const ChatApp = React.createClass({
   getInitialState() {
@@ -237,11 +271,11 @@ const ChatApp = React.createClass({
       <Tab eventKey={2} title="Ranking">
         <ListaRankingUsuarios users={this.state.users}/>
       </Tab>
-      <Tab eventKey={2} title="Chat">
+      <Tab eventKey={3} title="Chat">
         <MessageList messages={this.state.messages}/>
         <FormMessages/>
       </Tab>
-      <Tab eventKey={3} title="Contenidos">
+      <Tab eventKey={4} title="Contenidos">
         Contenidos
       </Tab>
     </Tabs>
@@ -251,16 +285,16 @@ const ChatApp = React.createClass({
 app.authenticate().then(() => {
   ReactDOM.render(
     <div id="app">
+    <LogoutButton/>
     <PageHeader>
-      Cardif CIMA<br/>
-      <LogoutButton/>
+      Cardif CIMA
     </PageHeader>
     <ChatApp/>
   </div>, document.querySelector('#mainAppContainer'));
-//}).catch(error => {
-//  if (error.code === 401) {
-//    window.location.href = '/login.html'
-//  }
-//  console.log(error.stack);
-//  console.error(error);
+  //}).catch(error => {
+  //  if (error.code === 401) {
+  //    window.location.href = '/login.html'
+  //  }
+  //  console.log(error.stack);
+  //  console.error(error);
 });
