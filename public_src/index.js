@@ -231,15 +231,18 @@ const ChatApp = React.createClass({
 
   render() {
     return <Tabs defaultActiveKey={1} id='mainTabs'>
-      <Tab eventKey={1} title="Ranking">
+      <Tab eventKey={1} title="Registro">
+        <BarCharts/>
+      </Tab>
+      <Tab eventKey={2} title="Ranking">
         <ListaRankingUsuarios users={this.state.users}/>
       </Tab>
-      <Tab eventKey={2} title="Mensajes">
+      <Tab eventKey={2} title="Chat">
         <MessageList messages={this.state.messages}/>
         <FormMessages/>
       </Tab>
-      <Tab eventKey={3} title="Tab 3">
-        <BarCharts/>
+      <Tab eventKey={3} title="Contenidos">
+        Contenidos
       </Tab>
     </Tabs>
   }
