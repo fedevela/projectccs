@@ -18,7 +18,7 @@ if (env === 'build') {
   outputFile = appName + '.js';
 }
 
-var config = {
+module.exports = {
   entry: './public_src/index.js',
   devtool: 'source-map',
   output: {
@@ -65,5 +65,3 @@ if (env === 'dev') {
   console.log('-------------------------');
 }
 */}
-
-module.exports = config;

@@ -25,6 +25,7 @@ var ControlLabel = require('react-bootstrap/lib/ControlLabel');
 var Grid = require('react-bootstrap/lib/Grid');
 var Row = require('react-bootstrap/lib/Row');
 var Col = require('react-bootstrap/lib/Col');
+var BarCharts = require('BarChart');
 
 const socket = io('http://localhost:3030/');
 
@@ -237,7 +238,9 @@ const ChatApp = React.createClass({
         <MessageList messages={this.state.messages}/>
         <FormMessages/>
       </Tab>
-      <Tab eventKey={3} title="Tab 3" disabled>Tab 3 content</Tab>
+      <Tab eventKey={3} title="Tab 3">
+        <BarCharts/>
+      </Tab>
     </Tabs>
   }
 });
@@ -251,10 +254,10 @@ app.authenticate().then(() => {
     </PageHeader>
     <ChatApp/>
   </div>, document.querySelector('#mainAppContainer'));
-}).catch(error => {
-  if (error.code === 401) {
-    window.location.href = '/login.html'
-  }
-  console.log(error.stack);
-  console.error(error);
+//}).catch(error => {
+//  if (error.code === 401) {
+//    window.location.href = '/login.html'
+//  }
+//  console.log(error.stack);
+//  console.error(error);
 });
