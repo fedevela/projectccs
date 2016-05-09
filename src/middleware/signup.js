@@ -7,6 +7,8 @@ module.exports = function(app) {
     console.log('before user create');
     // Get the user service and `create` a new user
     app.service('users').create({
+      numVentasRegistradas: 0,
+      numVentasCanceladas: 0,
       email: body.email,
       password: body.password
     })

@@ -14,23 +14,27 @@ module.exports = function(options) {
     const user = hook.params.user;
     // The actual servicioRegistroVentas text
     const text = "";
-    
-    // Override the original data
-    hook.data = {
-      text,
-      // Set the user id
-      userId: user._id,
-      // Add the current time via `getTime`
-      createdAt: new Date().getTime()
-    };
-//    console.log("registrando venta 3 hook ");
 
-    var numeroDeClics = user.numeroDeClics || 0;
-    numeroDeClics = numeroDeClics + 1;
+    // Append the original data
+    hook.data['text'] = text;
+    hook.data['userId'] = user._id;
+    hook.data['createdAt'] = new Date().getTime();
+
+    var numVentasRegistradas = user.numVentasRegistradas || 0;
+    var numVentasCanceladas = user.numVentasCanceladas || 0;
+    if (hook.data.registroVentaTipo == "crear"){
+      numVentasRegistradas = numVentasRegistradas + 1;
+    } else if (hook.data.registroVentaTipo == "cancelar"){
+      numVentasRegistradas = numVentasRegistradas - 1;
+      numVentasCanceladas = numVentasCanceladas + 1;      
+    }
 //    console.log("registrando venta 4 hook ");
 //    console.log("registrando venta 4:1" + hook.params.user);
 
-    hook.app.service('users').patch(user._id,{numeroDeClics : numeroDeClics});
+    hook.app.service('users').patch(user._id,{
+        numVentasRegistradas : numVentasRegistradas,
+        numVentasCanceladas : numVentasCanceladas
+    });
 
 //    console.log("registrando venta 5 hook create usuario");
   };

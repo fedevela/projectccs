@@ -48,7 +48,7 @@ const UserList = React.createClass({
       <ReactBootstrap.ListGroup componentClass="ul">
         {users.map(user =>
           <ReactBootstrap.ListGroupItem>
-          <img src={user.avatar || PLACEHOLDER} className="avatar"/> {user.email} : {user.numeroDeClics} Ventas
+          <img src={user.avatar || PLACEHOLDER} className="avatar"/> {user.email}:{user.numeroDeClics}
           </ReactBootstrap.ListGroupItem>
         )}
       </ReactBootstrap.ListGroup>

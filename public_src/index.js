@@ -20,6 +20,7 @@ var FormGroup = require('react-bootstrap/lib/FormGroup');
 var FormControl = require('react-bootstrap/lib/FormControl');
 var ListGroupItem = require('react-bootstrap/lib/ListGroupItem');
 var Button = require('react-bootstrap/lib/Button');
+var ButtonGroup = require('react-bootstrap/lib/ButtonGroup');
 var Glyphicon = require('react-bootstrap/lib/Glyphicon');
 var ControlLabel = require('react-bootstrap/lib/ControlLabel');
 var Grid = require('react-bootstrap/lib/Grid');
@@ -126,11 +127,19 @@ const MessageList = React.createClass({
 
 const ListaRankingUsuarios = React.createClass({
   getInitialState() {
-    //    return {text: new Date()};
-    return {};
+    //    tipos posibles: crear : cancelar
+    return {
+      registroVentaTipo : "crear"
+    };
   },
 
   registrarVenta(ev) {
+    app.service('servicioRegistroVentas').create(this.state);
+    ev.preventDefault();
+  },
+
+  cancelarVenta(ev) {
+    this.state.registroVentaTipo = "cancelar"
     app.service('servicioRegistroVentas').create(this.state);
     ev.preventDefault();
   },
@@ -139,15 +148,20 @@ const ListaRankingUsuarios = React.createClass({
     const users = this.props.users;
     return <div>
       <header>
-        <Button bsStyle="primary" onClick={this.registrarVenta}>
-          Registrar Venta
-        </Button>
+  <ButtonGroup vertical>
+      <Button bsStyle="success" onClick={this.registrarVenta}>
+       + (Registrar Venta)
+      </Button>
+    <Button bsStyle="danger" onClick={this.cancelarVenta}>
+      - (Cancelar Venta)
+    </Button>
+  </ButtonGroup>
       </header>
       <ListGroup componentClass="ul">
         <FlipMove>
           {users.map(user => <ListGroupItem key={user._id}>
             {user.email}
-            : {user.numeroDeClics}
+            : {user.numVentasRegistradas} ({user.numVentasCanceladas})
             Ventas
           </ListGroupItem>)}
         </FlipMove>
@@ -171,13 +185,13 @@ const LogoutButton = React.createClass({
   }
 });
 
-const IndexPage = React.createClass({
-  render() {
-    return (
-      <Well bsSize="large">Look I'm in a large well!</Well>
-    );
-  }
-});
+//const IndexPage = React.createClass({
+//  render() {
+//    return (
+//      <Well bsSize="large">Look I'm in a large well!</Well>
+//    );
+//  }
+//});
 
 //const LoginForm = React.createClass({
 //  render() {
@@ -224,7 +238,7 @@ const ChatApp = React.createClass({
     userService.find({
       query: {
         $sort: {
-          numeroDeClics: -1
+          numVentasRegistradas: -1
         }
       }
     }).then(page => this.setState({users: page.data}));
@@ -257,7 +271,7 @@ const ChatApp = React.createClass({
     servicioRegistroVentas.on('created', () => userService.find({
       query: {
         $sort: {
-          numeroDeClics: -1
+          numVentasRegistradas: -1
         }
       }
     }).then(page => this.setState({users: page.data})));
