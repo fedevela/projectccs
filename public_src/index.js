@@ -125,12 +125,10 @@ const MessageList = React.createClass({
   }
 });
 
-const ListaRankingUsuarios = React.createClass({
+const BotonesRankingUsuarios = React.createClass({
   getInitialState() {
     //    tipos posibles: crear : cancelar
-    return {
-      registroVentaTipo : "crear"
-    };
+    return {registroVentaTipo: "crear"};
   },
 
   registrarVenta(ev) {
@@ -143,26 +141,31 @@ const ListaRankingUsuarios = React.createClass({
     app.service('servicioRegistroVentas').create(this.state);
     ev.preventDefault();
   },
+  render() {
+        return <ButtonGroup vertical>
+          <Button bsStyle="success" onClick={this.registrarVenta}>
+            + (Registrar Venta)
+          </Button>
+          <Button bsStyle="danger" onClick={this.cancelarVenta}>
+            - (Cancelar Venta)
+          </Button>
+        </ButtonGroup>;
+  }
+});
 
+const ListaRankingUsuarios = React.createClass({
   render() {
     const users = this.props.users;
     return <div>
       <header>
-  <ButtonGroup vertical>
-      <Button bsStyle="success" onClick={this.registrarVenta}>
-       + (Registrar Venta)
-      </Button>
-    <Button bsStyle="danger" onClick={this.cancelarVenta}>
-      - (Cancelar Venta)
-    </Button>
-  </ButtonGroup>
+        <BotonesRankingUsuarios/>
       </header>
       <ListGroup componentClass="ul">
         <FlipMove>
           {users.map(user => <ListGroupItem key={user._id}>
             {user.email}
-            : {user.numVentasRegistradas} ({user.numVentasCanceladas})
-            Ventas
+            : {user.numVentasRegistradas}
+            ({user.numVentasCanceladas}) Ventas
           </ListGroupItem>)}
         </FlipMove>
       </ListGroup>
