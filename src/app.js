@@ -13,6 +13,7 @@ const bodyParser = require('body-parser');
 const socketio = require('feathers-socketio');
 const middleware = require('./middleware');
 const services = require('./services');
+//const error = require('feathers-errors/handler');
 
 const app = feathers();
 
@@ -25,6 +26,12 @@ app.use(compress())
   .use('/', serveStatic( app.get('public') ))
   .use(bodyParser.json())
   .use(bodyParser.urlencoded({ extended: true }))
+//  .use(error({
+//    html: function(error, req, res, next) {
+//      // render your error view with the error object
+//      res.render('error', error);
+//    }
+//}))
   .configure(hooks())
   .configure(rest())
   .configure(socketio())
