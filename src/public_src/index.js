@@ -127,42 +127,47 @@ const MessageList = React.createClass({
 
 const BotonesRankingUsuarios = React.createClass({
   getInitialState() {
-    //    tipos posibles: crear : cancelar
-    return {registroVentaTipo: "crear"};
+    return {
+        usuario: this.props.usuario
+    };
   },
 
   registrarVenta(ev) {
-    app.service('servicioRegistroVentas').create(this.state);
+    app.service('servicioRegistroVentas').create({registroVentaTipo:"crear"});
     ev.preventDefault();
   },
 
   cancelarVenta(ev) {
-    this.state.registroVentaTipo = "cancelar"
-    app.service('servicioRegistroVentas').create(this.state);
+    app.service('servicioRegistroVentas').create({registroVentaTipo:"cancelar"});
     ev.preventDefault();
   },
   render() {
-        return <ButtonGroup vertical>
+        return <div>
+                "{this.state.usuario.email} : {this.state.usuario.numVentasRegistradas} {this.state.usuario.numVentasCanceladas} "
+                <ButtonGroup vertical>
           <Button bsStyle="success" onClick={this.registrarVenta}>
             + (Registrar Venta)
           </Button>
           <Button bsStyle="danger" onClick={this.cancelarVenta}>
             - (Cancelar Venta)
           </Button>
-        </ButtonGroup>;
+        </ButtonGroup>
+        </div>;
   }
 });
 
 const ListaRankingUsuarios = React.createClass({
+  getInitialState() {
+    return {users: this.props.users, usuario : this.props.usuario};
+  },
   render() {
-    const users = this.props.users;
     return <div>
       <header>
-        <BotonesRankingUsuarios/>
+        <BotonesRankingUsuarios usuario={this.state.usuario}/>
       </header>
       <ListGroup componentClass="ul">
         <FlipMove>
-          {users.map(user => <ListGroupItem key={user._id}>
+          {this.state.users.map(user => <ListGroupItem key={user._id}>
             {user.email}
             : {user.numVentasRegistradas}
             ({user.numVentasCanceladas}) Ventas
@@ -188,43 +193,10 @@ const LogoutButton = React.createClass({
   }
 });
 
-//const IndexPage = React.createClass({
-//  render() {
-//    return (
-//      <Well bsSize="large">Look I'm in a large well!</Well>
-//    );
-//  }
-//});
-
-//const LoginForm = React.createClass({
-//  render() {
-//    return (
-//      <form onSubmit={this.sendMessage}>
-//        <FormGroup controlId="formMessages">
-//          <ControlLabel>Mensaje</ControlLabel>
-//
-//          <Grid>
-//            <Row>
-//              <Col xs={8} md={4}>
-//                <FormControl type="text" value={this.state.value} placeholder="Escribe tu mensaje..." onChange={this.handleChange}/>
-//              </Col>
-//              <Col xs={2} md={1}>
-//                <Button bsStyle="primary" type="submit">Enviar</Button>
-//              </Col>
-//            </Row>
-//          </Grid>
-//          {/*
-//          <HelpBlock>Validation is based on string length.</HelpBlock>
-//            */}
-//        </FormGroup>
-//      </form>
-//    );
-//  }
-//});
 
 const ChatApp = React.createClass({
   getInitialState() {
-    return {users: [], registroVentas: [], messages: []};
+    return {users: [], registroVentas: [], messages: [], usuario : this.props.usuario};
   },
 
   componentDidUpdate: function() {
@@ -281,12 +253,18 @@ const ChatApp = React.createClass({
   },
 
   render() {
-    return <Tabs defaultActiveKey={1} id='mainTabs'>
+      debugger;
+    return <div id="app">
+    <LogoutButton/>
+    <PageHeader>
+      Cardif CIMA
+    </PageHeader>
+    <Tabs defaultActiveKey={1} id='mainTabs'>
       <Tab eventKey={1} title="Registro">
         <BarCharts/>
       </Tab>
       <Tab eventKey={2} title="Ranking">
-        <ListaRankingUsuarios users={this.state.users}/>
+        <ListaRankingUsuarios users={this.state.users} usuario={this.state.usuario}/>
       </Tab>
       <Tab eventKey={3} title="Chat">
         <MessageList messages={this.state.messages}/>
@@ -296,18 +274,13 @@ const ChatApp = React.createClass({
         Contenidos
       </Tab>
     </Tabs>
+    </div>;
   }
 });
 
-app.authenticate().then(() => {
+app.authenticate().then((authResponse) => {
   ReactDOM.render(
-    <div id="app">
-    <LogoutButton/>
-    <PageHeader>
-      Cardif CIMA
-    </PageHeader>
-    <ChatApp/>
-  </div>, document.querySelector('#mainAppContainer'));
+    <ChatApp usuario={authResponse.data}/>, document.querySelector('#mainAppContainer'));
   //}).catch(error => {
   //  if (error.code === 401) {
   //    window.location.href = '/login.html'

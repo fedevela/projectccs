@@ -32,8 +32,9 @@ module.exports = function(options) {
         createdAt: new Date().getTime()
       };
     } catch (err) {
-      console.log(error.stack);
-      console.error(error);
+      console.log(err.stack);
+      console.error(err);
+      throw new Error(err.stack);
     }
   };
 };

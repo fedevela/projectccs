@@ -19,7 +19,7 @@ if (env === 'build') {
 }
 
 module.exports = {
-  entry: './public_src/index.js',
+  entry: './src/public_src/index.js',
   devtool: 'source-map',
   output: {
     path: __dirname + '/public/lib',
@@ -43,7 +43,7 @@ module.exports = {
     ]
   },
   resolve: {
-    root: path.resolve('./public_src'),
+    root: path.resolve('./src/public_src'),
     extensions: ['', '.js', '.jsx']
   },
   plugins: plugins

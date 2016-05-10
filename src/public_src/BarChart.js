@@ -9,9 +9,9 @@ var BarChartData =  {
          ['Platinum', 21.45, 'color: #e5e4e2' ] // CSS-style declaration
       ],
       options : {
-        title: "Density of Precious Metals, in g/cm^3",
-        bar: {groupWidth: "95%"},
-        legend: { position: "none" },
+        title: 'Density of Precious Metals, in g/cm^3',
+        bar: {groupWidth: '95%'},
+        legend: { position: 'none' },
       }
 };
 
@@ -21,7 +21,7 @@ var BarCharts = React.createClass({
 		return {
 			BarChart: {
 				data: [],
-				chartType: "",
+				chartType: '',
 				options : {}
 			}
 		};
@@ -31,8 +31,8 @@ var BarCharts = React.createClass({
 		var BarChart = {
 			data : BarChartData.dataArray,
 			options: BarChartData.options,
-			chartType: "BarChart",
-			div_id: "BarChart"
+			chartType: 'BarChart',
+			div_id: 'BarChart'
 		};
 
 
@@ -47,9 +47,9 @@ var BarCharts = React.createClass({
 	render: function() {
 
 		return (
-			<div className="Examples">
+			<div className='Examples'>
 				<h3> Bar Chart </h3>
-				<Chart chartType={this.state.BarChart.chartType} width={"500px"} height={"300px"} data={this.state.BarChart.data} options = {this.state.BarChart.options} graph_id={this.state.BarChart.div_id} />
+				<Chart chartType={this.state.BarChart.chartType} width={'500px'} height={'300px'} data={this.state.BarChart.data} options = {this.state.BarChart.options} graph_id={this.state.BarChart.div_id} />
 			</div>
 		);
 	}
