@@ -12,12 +12,13 @@ module.exports = function(options) {
 
   return function(hook) {
     try {
+        if (!hook.params.user){return;}
       // The authenticated user
       const user = hook.params.user;
       // The actual message text
-      const text = hook.data.text
+      text = (hook.data.text || '');
 
-
+      text = text
         // Messages can't be longer than 400 characters
         .substring(0, 400)
         // Do some basic HTML escaping
