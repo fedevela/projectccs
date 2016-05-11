@@ -186,40 +186,6 @@ const LogoutButton = React.createClass({
   }
 });
 
-//const IndexPage = React.createClass({
-//  render() {
-//    return (
-//      <Well bsSize="large">Look I'm in a large well!</Well>
-//    );
-//  }
-//});
-
-//const LoginForm = React.createClass({
-//  render() {
-//    return (
-//      <form onSubmit={this.sendMessage}>
-//        <FormGroup controlId="formMessages">
-//          <ControlLabel>Mensaje</ControlLabel>
-//
-//          <Grid>
-//            <Row>
-//              <Col xs={8} md={4}>
-//                <FormControl type="text" value={this.state.value} placeholder="Escribe tu mensaje..." onChange={this.handleChange}/>
-//              </Col>
-//              <Col xs={2} md={1}>
-//                <Button bsStyle="primary" type="submit">Enviar</Button>
-//              </Col>
-//            </Row>
-//          </Grid>
-//          {/*
-//          <HelpBlock>Validation is based on string length.</HelpBlock>
-//            */}
-//        </FormGroup>
-//      </form>
-//    );
-//  }
-//});
-
 const ChatApp = React.createClass({
   getInitialState() {
     return {users: [], registroVentas: [], messages: [], usuario:this.props.usuario}
@@ -275,7 +241,17 @@ const ChatApp = React.createClass({
           numVentasRegistradas: -1
         }
       }
-    }).then(page => this.setState({users: page.data})));
+    }).then(page => {
+//        debugger;
+        this.setState({users: page.data});
+        for (var aUser of page.data){
+            if (aUser._id === this.state.usuario._id){
+                this.setState({usuario: aUser});
+//                debugger;
+                break;
+            }
+        }
+    }));
   },
 
   render() {
@@ -284,7 +260,7 @@ const ChatApp = React.createClass({
     <PageHeader>
       Cardif CIMA 1217
     </PageHeader>
-    {this.state.usuario.email}
+    {this.state.usuario.email} : {this.state.usuario.numVentasRegistradas} ({this.state.usuario.numVentasCanceladas})
     <Tabs defaultActiveKey={1} id='mainTabs'>
       <Tab eventKey={1} title="Registro">
         <BarCharts usuario={this.state.usuario}/>
