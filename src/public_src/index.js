@@ -134,6 +134,7 @@ const ListaRankingUsuarios = React.createClass({
   },
 
   registrarVenta(ev) {
+    this.state.registroVentaTipo = "crear"
     app.service('servicioRegistroVentas').create(this.state);
     ev.preventDefault();
   },
@@ -221,7 +222,7 @@ const LogoutButton = React.createClass({
 
 const ChatApp = React.createClass({
   getInitialState() {
-    return {users: [], registroVentas: [], messages: []};
+    return {users: [], registroVentas: [], messages: [], usuario:this.props.usuario}
   },
 
   componentDidUpdate: function() {
@@ -278,9 +279,15 @@ const ChatApp = React.createClass({
   },
 
   render() {
-    return <Tabs defaultActiveKey={1} id='mainTabs'>
+    return <div id="app">
+    <LogoutButton/>
+    <PageHeader>
+      Cardif CIMA 1217
+    </PageHeader>
+    {this.state.usuario.email}
+    <Tabs defaultActiveKey={1} id='mainTabs'>
       <Tab eventKey={1} title="Registro">
-        <BarCharts/>
+        <BarCharts usuario={this.state.usuario}/>
       </Tab>
       <Tab eventKey={2} title="Ranking">
         <ListaRankingUsuarios users={this.state.users}/>
@@ -293,18 +300,13 @@ const ChatApp = React.createClass({
         Contenidos
       </Tab>
     </Tabs>
+    </div>;
   }
 });
 
-app.authenticate().then(() => {
-  ReactDOM.render(
-    <div id="app">
-    <LogoutButton/>
-    <PageHeader>
-      Cardif CIMA 1205
-    </PageHeader>
-    <ChatApp/>
-  </div>, document.querySelector('#mainAppContainer'));
+app.authenticate().then((authResponse) => {
+//    debugger;
+  ReactDOM.render(<ChatApp usuario={authResponse.data}/>, document.querySelector('#mainAppContainer'));
   //}).catch(error => {
   //  if (error.code === 401) {
   //    window.location.href = '/login.html'
