@@ -6,8 +6,8 @@ var path = require('path');
 //require('file?name=[name].[ext]!../index.html');
 
 var appName = 'CardifCIMAServer';
-var host = '0.0.0.0';
-var port = '9000';
+//var host = '0.0.0.0';
+//var port = '9000';
 
 var plugins = [], outputFile;
 
@@ -32,13 +32,9 @@ module.exports = {
         test: /(\.jsx|\.js)$/,
         loaders:[ 
             'babel?presets[]=react,presets[]=es2015',
-//            'jsx-loader?insertPragma=React.DOM&harmony'
             'jsx-loader?harmony'
         ],
-        exclude: /(node_modules|bower_components)///,
-//        query: {
-//          presets: ['react', 'es2015']
-//        }
+        exclude: /(node_modules|bower_components)/
       }
     ]
   },

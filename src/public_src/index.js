@@ -26,7 +26,8 @@ var ControlLabel = require('react-bootstrap/lib/ControlLabel');
 var Grid = require('react-bootstrap/lib/Grid');
 var Row = require('react-bootstrap/lib/Row');
 var Col = require('react-bootstrap/lib/Col');
-var BarCharts = require('BarChart');
+//var BarCharts = require('BarChart');
+var Chart = require('react-google-charts').Chart;
 
 const socket = io('http://localhost:3030/');
 
@@ -125,52 +126,6 @@ const MessageList = React.createClass({
   }
 });
 
-const ListaRankingUsuarios = React.createClass({
-  getInitialState() {
-    //    tipos posibles: crear : cancelar
-    return {
-      registroVentaTipo : "crear"
-    };
-  },
-
-  registrarVenta(ev) {
-    this.state.registroVentaTipo = "crear"
-    app.service('servicioRegistroVentas').create(this.state);
-    ev.preventDefault();
-  },
-
-  cancelarVenta(ev) {
-    this.state.registroVentaTipo = "cancelar"
-    app.service('servicioRegistroVentas').create(this.state);
-    ev.preventDefault();
-  },
-
-  render() {
-    const users = this.props.users;
-    return <div>
-      <header>
-  <ButtonGroup vertical>
-      <Button bsStyle="success" onClick={this.registrarVenta}>
-       + (Registrar Venta)
-      </Button>
-    <Button bsStyle="danger" onClick={this.cancelarVenta}>
-      - (Cancelar Venta)
-    </Button>
-  </ButtonGroup>
-      </header>
-      <ListGroup componentClass="ul">
-        <FlipMove>
-          {users.map(user => <ListGroupItem key={user._id}>
-            {user.email}
-            : {user.numVentasRegistradas} ({user.numVentasCanceladas})
-            Ventas
-          </ListGroupItem>)}
-        </FlipMove>
-      </ListGroup>
-    </div>;
-  }
-});
-
 const LogoutButton = React.createClass({
   logout() {
     app.logout().then(() => window.location.href = '/login.html');
@@ -188,7 +143,21 @@ const LogoutButton = React.createClass({
 
 const ChatApp = React.createClass({
   getInitialState() {
-    return {users: [], messages: [], usuario:this.props.usuario}
+    return {
+      users: [],
+      messages: [],
+      usuario: this.props.usuario,
+      BarChartData: {
+        chartType: 'BarChart',
+        div_id: 'BarChart',
+        options: {
+          title: 'Density of Precious Metals, in g/cm^3',
+          bar: {
+            groupWidth: '95%'
+          }
+        }
+      }
+    }
   },
 
   componentDidUpdate: function() {
@@ -224,15 +193,15 @@ const ChatApp = React.createClass({
     // Listen to newly created messages
     messageService.on('created', message => this.setState({messages: this.state.messages.concat(message)}));
 
-//    // Find the last 10 servicioRegistroVentas
-//    servicioRegistroVentas.find({
-//      query: {
-//        $sort: {
-//          createdAt: -1
-//        },
-//        $limit: this.props.limit || 10
-//      }
-//    }).then(page => this.setState({registroVentas: page.data.reverse()}));
+    //    // Find the last 10 servicioRegistroVentas
+    //    servicioRegistroVentas.find({
+    //      query: {
+    //        $sort: {
+    //          createdAt: -1
+    //        },
+    //        $limit: this.props.limit || 10
+    //      }
+    //    }).then(page => this.setState({registroVentas: page.data.reverse()}));
 
     // Listen to newly created registroVentas
     servicioRegistroVentas.on('created', () => userService.find({
@@ -242,47 +211,104 @@ const ChatApp = React.createClass({
         }
       }
     }).then(page => {
-//        debugger;
-        this.setState({users: page.data});
-        for (var aUser of page.data){
-            if (aUser._id === this.state.usuario._id){
-                this.setState({usuario: aUser});
-//                debugger;
-                break;
-            }
+      //        debugger;
+      this.setState({users: page.data});
+      for (var aUser of page.data) {
+        if (aUser._id === this.state.usuario._id) {
+          this.setState({usuario: aUser});
+          //                debugger;
+          break;
         }
+      }
     }));
   },
 
+  registrarVenta(ev) {
+    app.service('servicioRegistroVentas').create({registroVentaTipo: "crear"});
+    ev.preventDefault();
+  },
+
+  cancelarVenta(ev) {
+    app.service('servicioRegistroVentas').create({registroVentaTipo: "cancelar"});
+    ev.preventDefault();
+  },
+
   render() {
+    //      debugger;
     return <div id="app">
-    <LogoutButton/>
-    <PageHeader>
-      Cardif CIMA 1217
-    </PageHeader>
-    {this.state.usuario.email} : {this.state.usuario.numVentasRegistradas} ({this.state.usuario.numVentasCanceladas})
-    <Tabs defaultActiveKey={1} id='mainTabs'>
-      <Tab eventKey={1} title="Registro">
-        <BarCharts usuario={this.state.usuario}/>
-      </Tab>
-      <Tab eventKey={2} title="Ranking">
-        <ListaRankingUsuarios users={this.state.users}/>
-      </Tab>
-      <Tab eventKey={3} title="Chat">
-        <MessageList messages={this.state.messages}/>
-        <FormMessages/>
-      </Tab>
-      <Tab eventKey={4} title="Contenidos">
-        Contenidos
-      </Tab>
-    </Tabs>
+      <LogoutButton/>
+      <PageHeader>
+        Cardif CIMA
+      </PageHeader>
+      {this.state.usuario.email}
+      : {this.state.usuario.numVentasRegistradas}
+      ({this.state.usuario.numVentasCanceladas})
+      <Tabs defaultActiveKey={1} id='mainTabs'>
+        <Tab eventKey={1} title="Registro">
+          <div>
+            <header>
+              <ButtonGroup vertical>
+                <Button bsStyle="success" onClick={this.registrarVenta}>
+                  + (Registrar Venta)
+                </Button>
+                <Button bsStyle="danger" onClick={this.cancelarVenta}>
+                  - (Cancelar Venta)
+                </Button>
+              </ButtonGroup>
+            </header>
+            <Chart chartType={this.state.BarChartData.chartType} data={[
+              [
+                'Ventas',
+                'Cantidad', {
+                  role: 'style'
+                }
+              ],
+              [
+                'Registradas', this.state.usuario.numVentasRegistradas, 'green'
+              ],
+              ['Canceladas', this.state.usuario.numVentasCanceladas, 'orange']
+            ]} options={this.state.BarChartData.options} graph_id={this.state.BarChartData.div_id}/>
+          </div>
+        </Tab>
+        <Tab eventKey={2} title="Ranking">
+          <div>
+            <header>
+              <ButtonGroup vertical>
+                <Button bsStyle="success" onClick={this.registrarVenta}>
+                  + (Registrar Venta)
+                </Button>
+                <Button bsStyle="danger" onClick={this.cancelarVenta}>
+                  - (Cancelar Venta)
+                </Button>
+              </ButtonGroup>
+            </header>
+            <ListGroup componentClass="ul">
+              <FlipMove>
+                {this.state.users.map(user => <ListGroupItem key={user._id}>
+                  {user.email}
+                  : {user.numVentasRegistradas}
+                  ({user.numVentasCanceladas}) Ventas
+                </ListGroupItem>)}
+              </FlipMove>
+            </ListGroup>
+          </div>
+        </Tab>
+        <Tab eventKey={3} title="Chat">
+          <MessageList messages={this.state.messages}/>
+          <FormMessages/>
+        </Tab>
+        <Tab eventKey={4} title="Contenidos">
+          Contenidos
+        </Tab>
+      </Tabs>
     </div>;
   }
 });
 
 app.authenticate().then((authResponse) => {
-//    debugger;
-  ReactDOM.render(<ChatApp usuario={authResponse.data}/>, document.querySelector('#mainAppContainer'));
+  //    debugger;
+  ReactDOM.render(
+    <ChatApp usuario={authResponse.data}/>, document.querySelector('#mainAppContainer'));
   //}).catch(error => {
   //  if (error.code === 401) {
   //    window.location.href = '/login.html'
