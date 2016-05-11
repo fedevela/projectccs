@@ -188,7 +188,7 @@ const LogoutButton = React.createClass({
 
 const ChatApp = React.createClass({
   getInitialState() {
-    return {users: [], registroVentas: [], messages: [], usuario:this.props.usuario}
+    return {users: [], messages: [], usuario:this.props.usuario}
   },
 
   componentDidUpdate: function() {
@@ -224,15 +224,15 @@ const ChatApp = React.createClass({
     // Listen to newly created messages
     messageService.on('created', message => this.setState({messages: this.state.messages.concat(message)}));
 
-    // Find the last 10 servicioRegistroVentas
-    servicioRegistroVentas.find({
-      query: {
-        $sort: {
-          createdAt: -1
-        },
-        $limit: this.props.limit || 10
-      }
-    }).then(page => this.setState({registroVentas: page.data.reverse()}));
+//    // Find the last 10 servicioRegistroVentas
+//    servicioRegistroVentas.find({
+//      query: {
+//        $sort: {
+//          createdAt: -1
+//        },
+//        $limit: this.props.limit || 10
+//      }
+//    }).then(page => this.setState({registroVentas: page.data.reverse()}));
 
     // Listen to newly created registroVentas
     servicioRegistroVentas.on('created', () => userService.find({
