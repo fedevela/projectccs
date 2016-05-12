@@ -317,11 +317,43 @@ const ChatApp = React.createClass({
             </FlipMove>
           </ListGroup>
           <footer>
-              <FormMessages/>
+            <FormMessages/>
           </footer>
         </Tab>
         <Tab eventKey={4} title="Contenidos">
-          Contenidos
+          Contenidos:
+          <ListGroup componentClass="ul">
+            <ListGroupItem>
+              <a href="https://www.bnpparibascardif.com/documents/583427/809429/Pr%C3%A9sentation+investisseurs/7aacd782-5876-48c6-96c3-8ea95f2cd27c">
+                <img src="img/Mimetypes-application-pdf-icon.png"/>
+                Documento PDF AAA
+              </a>
+            </ListGroupItem>
+            <ListGroupItem>
+              <a href="https://www.youtube.com/watch?v=Egj6hvtU_VE">
+                <img src="img/Web-Youtube-alt-2-Metro-icon.png"/>
+                Video YouTube AAA
+              </a>
+            </ListGroupItem>
+            <ListGroupItem>
+              <a href="https://www.bnpparibascardif.com/documents/583427/809429/Pr%C3%A9sentation+investisseurs/7aacd782-5876-48c6-96c3-8ea95f2cd27c">
+                <img src="img/Mimetypes-application-pdf-icon.png"/>
+                Documento PDF BBB
+              </a>
+            </ListGroupItem>
+            <ListGroupItem>
+              <a href="https://www.bnpparibascardif.com/documents/583427/809429/Pr%C3%A9sentation+investisseurs/7aacd782-5876-48c6-96c3-8ea95f2cd27c">
+                <img src="img/Mimetypes-application-pdf-icon.png"/>
+                Documento PDF CCC
+              </a>
+            </ListGroupItem>
+            <ListGroupItem>
+              <a href="https://www.youtube.com/watch?v=Egj6hvtU_VE">
+                <img src="img/Web-Youtube-alt-2-Metro-icon.png"/>
+                Video YouTube BBB
+              </a>
+            </ListGroupItem>
+          </ListGroup>
         </Tab>
       </Tabs>
     </div>;
