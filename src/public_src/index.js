@@ -147,11 +147,17 @@ const ChatApp = React.createClass({
         chartType: 'BarChart',
         div_id: 'BarChart',
         options: {
-          title: 'Density of Precious Metals, in g/cm^3',
+          title: 'Registro de ventas',
           bar: {
             groupWidth: '100%'
           },
-          legend: {position: 'none'}
+          legend: {position: 'none'},
+          hAxis: {
+            viewWindow: {
+                min: 0
+            },
+            format: '0'
+          }
         }
       }
     }
@@ -269,7 +275,7 @@ const ChatApp = React.createClass({
               [
                 'Registradas', this.state.usuario.numVentasRegistradas, 'green'
               ],
-              ['Canceladas', this.state.usuario.numVentasCanceladas, 'orange']
+              ['Canceladas', this.state.usuario.numVentasCanceladas, '#ff1f00']
             ]} options={this.state.BarChartData.options} graph_id={this.state.BarChartData.div_id}/>
           </div>
         </Tab>
