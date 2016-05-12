@@ -98,30 +98,6 @@ const FormMessages = React.createClass({
   }
 });
 
-const MessageList = React.createClass({
-  // Render a single message
-  renderMessage(message) {
-    const sender = message.sentBy || dummyUser;
-
-    return <ListGroupItem key={message._id}>
-        <div className="messageMetadata">{sender.email} :
-            {moment(message.createdAt).format('MMM Do, hh:mm:ss')}
-        </div>
-        <div>
-          {message.text}
-        </div>
-    </ListGroupItem>;
-  },
-
-  render() {
-    return <ListGroup componentClass="ul">
-              <FlipMove>
-                {this.props.messages.map(message => this.renderMessage)}
-              </FlipMove>
-            </ListGroup>;
-  }
-});
-
 const LogoutButton = React.createClass({
   logout() {
     app.logout().then(() => window.location.href = '/login.html');
@@ -151,30 +127,24 @@ const ChatApp = React.createClass({
           bar: {
             groupWidth: '100%'
           },
-          legend: {position: 'none'},
+          legend: {
+            position: 'none'
+          },
           hAxis: {
             viewWindow: {
-                min: 0
+              min: 0
             },
             format: '0'
           }
         }
+      },
+      GaugeChartData: {
+        chartType: 'Gauge',
+        div_id: 'GaugeChart'
       }
     }
   },
 
-  findMessagesTail: function() {
-    const messageService = app.service('messages');
-    messageService.find({
-      query: {
-        $sort: {
-          createdAt: -1
-        },
-        $limit: this.props.limit || 10
-      }
-    }).then(page => this.setState({messages: page.data}));
-  },
-  
   componentDidUpdate: function() {
     //    const node = this.getDOMNode().querySelector('.chat');
     //    node.scrollTop = node.scrollHeight - node.clientHeight;
@@ -197,10 +167,24 @@ const ChatApp = React.createClass({
     userService.on('created', user => this.setState({users: this.state.users.concat(user)}));
 
     // Find the last 10 messages
-    this.findMessagesTail();
+    messageService.find({
+      query: {
+        $sort: {
+          createdAt: -1
+        },
+        $limit: this.props.limit || 10
+      }
+    }).then(page => this.setState({messages: page.data.reverse()}));
     // Listen to newly created messages
-//    messageService.on('created', message => this.setState({messages: this.state.messages.concat(message)}));
-    messageService.on('created', () => this.findMessagesTail());
+    //    messageService.on('created', message => this.setState({messages: this.state.messages.concat(message)}));
+    messageService.on('created', () => messageService.find({
+      query: {
+        $sort: {
+          createdAt: -1
+        },
+        $limit: this.props.limit || 10
+      }
+    }).then(page => this.setState({messages: page.data.reverse()})));
 
     //    // Find the last 10 servicioRegistroVentas
     //    servicioRegistroVentas.find({
@@ -247,7 +231,7 @@ const ChatApp = React.createClass({
     return <div id="app">
       <LogoutButton/>
       <PageHeader>
-        Cardif CIMA
+        Cardif CIMA 1308
       </PageHeader>
       {this.state.usuario.email}
       : {this.state.usuario.numVentasRegistradas}
@@ -265,6 +249,20 @@ const ChatApp = React.createClass({
                 </Button>
               </ButtonGroup>
             </header>
+            <img src="img/gauge.png"/>
+            <Chart chartType={this.state.GaugeChartData.chartType} data={[
+              [
+                'Label', 'Value'
+              ],
+              [
+                'Memory', 80
+              ],
+              [
+                'CPU', 55
+              ],
+              ['Network', 68]
+            ]} options={this.state.GaugeChartData.options} graph_id={this.state.GaugeChartData.div_id}/>
+
             <Chart chartType={this.state.BarChartData.chartType} data={[
               [
                 'Ventas',
@@ -303,8 +301,24 @@ const ChatApp = React.createClass({
           </div>
         </Tab>
         <Tab eventKey={3} title="Chat">
-          <FormMessages/>
-          <MessageList messages={this.state.messages}/>
+          <ListGroup componentClass="ul">
+            <FlipMove>
+              {this.state.messages.map(message => {
+                const sender = message.sentBy || dummyUser;
+                return <ListGroupItem key={message._id}>
+                  <div className="messageMetadata">{sender.email}
+                    : {moment(message.createdAt).format('MMM Do, hh:mm:ss')}
+                  </div>
+                  <div>
+                    {message.text}
+                  </div>
+                </ListGroupItem>
+              })}
+            </FlipMove>
+          </ListGroup>
+          <footer>
+              <FormMessages/>
+          </footer>
         </Tab>
         <Tab eventKey={4} title="Contenidos">
           Contenidos
