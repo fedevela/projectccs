@@ -103,26 +103,22 @@ const MessageList = React.createClass({
   renderMessage(message) {
     const sender = message.sentBy || dummyUser;
 
-    return <div key={message._id}>
-      <img src={sender.avatar || PLACEHOLDER} alt={sender.email}/>
-      <div>
-        <p>
-          <span>{sender.email}</span>
-          <span>
+    return <ListGroupItem key={message._id}>
+        <div className="messageMetadata">{sender.email} :
             {moment(message.createdAt).format('MMM Do, hh:mm:ss')}
-          </span>
-        </p>
-        <p>
+        </div>
+        <div>
           {message.text}
-        </p>
-      </div>
-    </div>;
+        </div>
+    </ListGroupItem>;
   },
 
   render() {
-    return <div>
-      {this.props.messages.map(this.renderMessage)}
-    </div>;
+    return <ListGroup componentClass="ul">
+              <FlipMove>
+                {this.props.messages.map(message => this.renderMessage)}
+              </FlipMove>
+            </ListGroup>;
   }
 });
 
@@ -153,13 +149,26 @@ const ChatApp = React.createClass({
         options: {
           title: 'Density of Precious Metals, in g/cm^3',
           bar: {
-            groupWidth: '95%'
-          }
+            groupWidth: '100%'
+          },
+          legend: {position: 'none'}
         }
       }
     }
   },
 
+  findMessagesTail: function() {
+    const messageService = app.service('messages');
+    messageService.find({
+      query: {
+        $sort: {
+          createdAt: -1
+        },
+        $limit: this.props.limit || 10
+      }
+    }).then(page => this.setState({messages: page.data}));
+  },
+  
   componentDidUpdate: function() {
     //    const node = this.getDOMNode().querySelector('.chat');
     //    node.scrollTop = node.scrollHeight - node.clientHeight;
@@ -182,16 +191,10 @@ const ChatApp = React.createClass({
     userService.on('created', user => this.setState({users: this.state.users.concat(user)}));
 
     // Find the last 10 messages
-    messageService.find({
-      query: {
-        $sort: {
-          createdAt: -1
-        },
-        $limit: this.props.limit || 10
-      }
-    }).then(page => this.setState({messages: page.data.reverse()}));
+    this.findMessagesTail();
     // Listen to newly created messages
-    messageService.on('created', message => this.setState({messages: this.state.messages.concat(message)}));
+//    messageService.on('created', message => this.setState({messages: this.state.messages.concat(message)}));
+    messageService.on('created', () => this.findMessagesTail());
 
     //    // Find the last 10 servicioRegistroVentas
     //    servicioRegistroVentas.find({
@@ -294,8 +297,8 @@ const ChatApp = React.createClass({
           </div>
         </Tab>
         <Tab eventKey={3} title="Chat">
-          <MessageList messages={this.state.messages}/>
           <FormMessages/>
+          <MessageList messages={this.state.messages}/>
         </Tab>
         <Tab eventKey={4} title="Contenidos">
           Contenidos
