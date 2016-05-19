@@ -4,7 +4,7 @@ module.exports = function(app) {
   return function(req, res, next) {
     const body = req.body;
 
-    console.log('before user create');
+//    console.log('before user create');
     // Get the user service and `create` a new user
     app.service('users').create({
       numVentasRegistradas: 0,
@@ -17,6 +17,6 @@ module.exports = function(app) {
     // On errors, just call our error middleware
     .catch(next);
     
-    console.log('after user create');
+//    console.log('after user create');
   };
 };
