@@ -1,0 +1,30 @@
+.page-header {
+  margin: 0px;
+}
+
+.jsContentTest {
+  background-color: yellow;
+}
+
+#LogoutButtonID {
+  float: right;
+}
+
+.nav>li>a {
+    padding: 3px 5px;
+}
+
+.messageMetadata{
+    float: right;
+    font-size: xx-small;
+    color: #CFCFCF;
+}
+
+.messageText{
+    float: left;
+    text-align: left;
+}
+
+.list-group-item {
+    padding: 1px 3px !important;
+}

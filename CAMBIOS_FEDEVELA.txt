@@ -1,0 +1,19 @@
+
+
+npm install mongodb feathers-mongodb --save
+
+
+
+{/*<aside className="sidebar col col-3 flex flex-column flex-space-between">*/}    {/*</aside>*/}
+
+
+
+    {/*
+    <div id="app" className="flex flex-column">
+    <header className="title-bar flex flex-row flex-center">
+      <div className="title-wrapper block center-element">
+        <img className="logo" src="http://feathersjs.com/img/feathers-logo-wide.png" alt="Feathers Logo"/>
+        <span className="title">Chat</span>
+      </div>
+    </header>
+    */}
