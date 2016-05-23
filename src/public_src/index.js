@@ -333,9 +333,10 @@ const ChatApp = React.createClass({
           
       <main className="chat flex flex-column flex-1 clear">
               <FlipMove>
-        {this.state.messages.map(message =>
-          <div className="message flex flex-row" key={message._id}>
-      <img src={message.sentBy.profileImg} alt={message.sentBy.email} className="avatar" />
+        {this.state.messages.map(message =>{
+          var theProfileImg = message.sentBy.profileImg || PLACEHOLDER;
+          return <div className="message flex flex-row" key={message._id}>
+      <img src={theProfileImg} alt={message.sentBy.email} className="avatar" />
       <div className="message-wrapper">
         <p className="message-header">
           <span className="username font-600">{message.sentBy.email}</span>
@@ -347,7 +348,8 @@ const ChatApp = React.createClass({
           {message.text}
         </p>
       </div>
-    </div>
+    </div>;
+        }
         )}
     </FlipMove>
     </main>
