@@ -255,16 +255,6 @@
 	      }.bind(this));
 	    }.bind(this));
 	
-	    //    // Find the last 10 servicioRegistroVentas
-	    //    servicioRegistroVentas.find({
-	    //      query: {
-	    //        $sort: {
-	    //          createdAt: -1
-	    //        },
-	    //        $limit: this.props.limit || 10
-	    //      }
-	    //    }).then(page => this.setState({registroVentas: page.data.reverse()}));
-	
 	    // Listen to newly created registroVentas
 	    servicioRegistroVentas.on('created', function () {
 	      return userService.find({
@@ -286,7 +276,6 @@
 	          }
 	          if (aUser._id === this.state.usuario._id) {
 	            this.setState({ usuario: aUser });
-	            //                debugger;
 	            break;
 	          }
 	        }
@@ -311,9 +300,8 @@
 	      }], ['Registradas', this.state.usuario.numVentasRegistradas, 'green'], ['Canceladas', this.state.usuario.numVentasCanceladas, '#ff1f00']], options: this.state.BarChartData.options, graph_id: this.state.BarChartData.div_id }))), React.createElement(Tab, { eventKey: 2, title: "Ranking" }, React.createElement("div", null, React.createElement("header", null, React.createElement(ButtonGroup, null, React.createElement(Button, { bsStyle: "danger", onClick: this.cancelarVenta }, "- (Cancelar Venta)"), React.createElement(Button, { bsStyle: "success", onClick: this.registrarVenta }, "+ (Registrar Venta)"))), React.createElement(ListGroup, { componentClass: "ul" }, React.createElement(FlipMove, {
 	      duration: 1000 }, this.state.users.map(function (user) {
 	      return React.createElement(ListGroupItem, { key: user._id }, user.email, ": ", user.numVentasRegistradas, "(", user.numVentasCanceladas, ") Ventas");
-	    }))))), React.createElement(Tab, { eventKey: 3, title: "Chat" }, React.createElement(ButtonGroup, null, React.createElement(Button, null, "General"), React.createElement(Button, null, "Tips de Ventas"), React.createElement(Button, null, "Campañas"), React.createElement(Button, null, "Sucursal")), React.createElement(ListGroup, { componentClass: "ul" }, React.createElement(FlipMove, null, this.state.messages.map(function (message) {
-	      var sender = message.sentBy || dummyUser;
-	      return React.createElement(ListGroupItem, { key: message._id }, React.createElement("div", { className: "messageMetadata" }, sender.email, ": ", moment(message.createdAt).format('MMM Do, hh:mm:ss')), React.createElement("div", null, message.text));
+	    }))))), React.createElement(Tab, { eventKey: 3, title: "Chat" }, React.createElement(ButtonGroup, null, React.createElement(Button, null, "General"), React.createElement(Button, null, "Tips de Ventas"), React.createElement(Button, null, "Campañas"), React.createElement(Button, null, "Sucursal")), React.createElement("main", { className: "chat flex flex-column flex-1 clear" }, React.createElement(FlipMove, null, this.state.messages.map(function (message) {
+	      return React.createElement("div", { className: "message flex flex-row", key: message._id }, React.createElement("img", { src: message.sentBy.profileImg, alt: message.sentBy.email, className: "avatar" }), React.createElement("div", { className: "message-wrapper" }, React.createElement("p", { className: "message-header" }, React.createElement("span", { className: "username font-600" }, message.sentBy.email), React.createElement("span", { className: "sent-date font-300" }, moment(message.createdAt).format('MMM Do, hh:mm:ss'))), React.createElement("p", { className: "message-content font-300" }, message.text)));
 	    }))), React.createElement("footer", null, React.createElement(FormMessages, null))), React.createElement(Tab, { eventKey: 4, title: "Contenidos" }, "Contenidos:", React.createElement(ListGroup, { componentClass: "ul" }, React.createElement(ListGroupItem, null, React.createElement("a", { href: "https://www.bnpparibascardif.com/documents/583427/809429/Pr%C3%A9sentation+investisseurs/7aacd782-5876-48c6-96c3-8ea95f2cd27c" }, React.createElement("img", { src: "img/Mimetypes-application-pdf-icon.png" }), "Documento PDF AAA")), React.createElement(ListGroupItem, null, React.createElement("a", { href: "https://www.youtube.com/watch?v=Egj6hvtU_VE" }, React.createElement("img", { src: "img/Web-Youtube-alt-2-Metro-icon.png" }), "Video YouTube AAA")), React.createElement(ListGroupItem, null, React.createElement("a", { href: "https://www.bnpparibascardif.com/documents/583427/809429/Pr%C3%A9sentation+investisseurs/7aacd782-5876-48c6-96c3-8ea95f2cd27c" }, React.createElement("img", { src: "img/Mimetypes-application-pdf-icon.png" }), "Documento PDF BBB")), React.createElement(ListGroupItem, null, React.createElement("a", { href: "https://www.bnpparibascardif.com/documents/583427/809429/Pr%C3%A9sentation+investisseurs/7aacd782-5876-48c6-96c3-8ea95f2cd27c" }, React.createElement("img", { src: "img/Mimetypes-application-pdf-icon.png" }), "Documento PDF CCC")), React.createElement(ListGroupItem, null, React.createElement("a", { href: "https://www.youtube.com/watch?v=Egj6hvtU_VE" }, React.createElement("img", { src: "img/Web-Youtube-alt-2-Metro-icon.png" }), "Video YouTube BBB"))))));
 	  }
 	});
