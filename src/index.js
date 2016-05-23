@@ -8,5 +8,5 @@ var thePort = process.env.PORT || port;
 const server = app.listen(thePort);
 
 server.on('listening', () =>
-  console.log(`Feathers application started on ${app.get('host')}:${port}`)
+  console.log(`Feathers application started on ${app.get('host')}:${thePort}`)
 );
