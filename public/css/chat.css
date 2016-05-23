@@ -18,7 +18,7 @@ html, body {
 
 a {
   text-decoration: none;
-  color: #31D8A0;
+  color: #4F7EC2;
 }
 
 a:hover,
@@ -33,7 +33,7 @@ a:focus {
 
 .button-primary {
   padding: 0.6em 1.2em;
-  background: #31D8A0;
+  background: #357fa1;
   color: #ffffff;
   border: none;
   border-radius: 5px;
@@ -42,7 +42,7 @@ a:focus {
 
 .button-primary:hover,
 .button-primary:focus {
-  background: #27C895;
+  background: #1a3542;
   color: #ffffff;
 }
 
@@ -52,7 +52,6 @@ a:focus {
 
 main.home {
   padding-top: 100px;
-  padding-bottom: 100px;
 }
 
 main.home img.logo {
@@ -76,14 +75,14 @@ main.home .button.signup {
 main.home .button.login {
   background: none;
   border: 2px solid #CFCFCF;
-  color: #999;
+  color: #757b75;
 }
 
 main.home .button.login:hover,
 main.home .button.login:focus {
   background: none;
-  border: 2px solid #31D8A0;
-  color: #31D8A0;
+  border: 2px solid #357fa1;
+  color: #357fa1;
 }
 
 /* ======================================= */
@@ -154,7 +153,7 @@ aside.sidebar {
 }
 
 aside.sidebar .online-count {
-  color: #31D8A0;
+  color: #4F7EC2;
   margin-right: 5px;
 }
 
@@ -177,7 +176,7 @@ aside.sidebar li > a {
 
 aside.sidebar li > a:hover > span,
 aside.sidebar li > a:focus > span, {
-  color: #31D8A0;
+  color: #4F7EC2;
 }
 
 aside.sidebar img.avatar {

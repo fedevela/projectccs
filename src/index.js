@@ -2,7 +2,10 @@
 
 const app = require('./app');
 const port = app.get('port');
-const server = app.listen(port);
+
+var thePort = process.env.PORT || port;
+
+const server = app.listen(thePort);
 
 server.on('listening', () =>
   console.log(`Feathers application started on ${app.get('host')}:${port}`)

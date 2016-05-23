@@ -1,6 +1,8 @@
 'use strict';
 
-const gravatar = require('./gravatar');
+const randomUserImage = require('./randomUserImage');
+
+//const gravatar = require('./gravatar');
 
 const globalHooks = require('../../../hooks');
 const hooks = require('feathers-hooks');
@@ -18,7 +20,7 @@ exports.before = {
     auth.populateUser(),
     auth.restrictToAuthenticated()
   ],
-  create: [auth.hashPassword(), gravatar()],
+  create: [auth.hashPassword(), randomUserImage()],
   update: [
     auth.verifyToken(),
     auth.populateUser(),
