@@ -67,7 +67,7 @@
 	var ListGroupItem = __webpack_require__(414);
 	var Button = __webpack_require__(421);
 	var ButtonGroup = __webpack_require__(422);
-	var Glyphicon = __webpack_require__(419);
+	//var Glyphicon = require('react-bootstrap/lib/Glyphicon');
 	var ControlLabel = __webpack_require__(423);
 	var Grid = __webpack_require__(424);
 	var Row = __webpack_require__(425);
@@ -194,14 +194,39 @@
 	      query: {
 	        $sort: {
 	          numVentasRegistradas: -1
-	        }
+	        },
+	        $limit: -1
 	      }
 	    }).then(function (page) {
-	      return this.setState({ users: page.data });
+	      //      debugger;
+	      this.setState({ users: page.data });
 	    }.bind(this));
-	    // Listen to new users so we can show them in real-time
-	    userService.on('created', function (user) {
-	      return this.setState({ users: this.state.users.concat(user) });
+	
+	    // Listen to new users so we can show them in real-time   
+	    userService.on('created', function () {
+	      return userService.find({
+	        query: {
+	          $sort: {
+	            numVentasRegistradas: -1
+	          },
+	          $limit: -1
+	        }
+	      }).then(function (page) {
+	        var $__0, $__1, $__2;
+	        this.setState({ users: page.data });
+	        var aUser;for ($__0 = page.data, $__1 = Array.isArray($__0), $__2 = 0, $__0 = $__1 ? $__0 : $__0[/*global Symbol*/typeof Symbol == "function" ? Symbol.iterator : "@@iterator"]();;) {
+	          if ($__1) {
+	            if ($__2 >= $__0.length) break;aUser = $__0[$__2++];
+	          } else {
+	            $__2 = $__0.next();if ($__2.done) break;aUser = $__2.value;
+	          }
+	          if (aUser._id === this.state.usuario._id) {
+	            this.setState({ usuario: aUser });
+	            //                debugger;
+	            break;
+	          }
+	        }
+	      }.bind(this));
 	    }.bind(this));
 	
 	    // Find the last 10 messages
@@ -246,11 +271,12 @@
 	        query: {
 	          $sort: {
 	            numVentasRegistradas: -1
-	          }
+	          },
+	          $limit: -1
 	        }
 	      }).then(function (page) {
 	        var $__0, $__1, $__2;
-	        //        debugger;
+	        //              debugger;
 	        this.setState({ users: page.data });
 	        var aUser;for ($__0 = page.data, $__1 = Array.isArray($__0), $__2 = 0, $__0 = $__1 ? $__0 : $__0[/*global Symbol*/typeof Symbol == "function" ? Symbol.iterator : "@@iterator"]();;) {
 	          if ($__1) {
@@ -280,9 +306,10 @@
 	
 	  render: function render() {
 	    //      debugger;
-	    return React.createElement("div", { id: "app" }, React.createElement(LogoutButton, null), React.createElement(PageHeader, null, "Cardif CIMA 1056"), this.state.usuario.email, ": ", this.state.usuario.numVentasRegistradas, "(", this.state.usuario.numVentasCanceladas, ")", React.createElement(Tabs, { defaultActiveKey: 1, id: "mainTabs" }, React.createElement(Tab, { eventKey: 1, title: "Registro" }, React.createElement("div", null, React.createElement("header", null, React.createElement(ButtonGroup, null, React.createElement(Button, { bsStyle: "danger", onClick: this.cancelarVenta }, "- (Cancelar Venta)"), React.createElement(Button, { bsStyle: "success", onClick: this.registrarVenta }, "+ (Registrar Venta)"))), React.createElement("img", { src: "img/gauge.png" }), React.createElement(Chart, { chartType: this.state.GaugeChartData.chartType, data: [['Label', 'Value'], ['Memory', 80], ['CPU', 55], ['Network', 68]], options: this.state.GaugeChartData.options, graph_id: this.state.GaugeChartData.div_id }), React.createElement(Chart, { chartType: this.state.BarChartData.chartType, data: [['Ventas', 'Cantidad', {
+	    return React.createElement("div", { id: "app" }, React.createElement(LogoutButton, null), React.createElement(PageHeader, null, "Cardif CIMA"), this.state.usuario.email, ": ", this.state.usuario.numVentasRegistradas, "(", this.state.usuario.numVentasCanceladas, ")", React.createElement(Tabs, { defaultActiveKey: 2, id: "mainTabs" }, React.createElement(Tab, { eventKey: 1, title: "Registro" }, React.createElement("div", null, React.createElement("header", null, React.createElement(ButtonGroup, null, React.createElement(Button, { bsStyle: "danger", onClick: this.cancelarVenta }, "- (Cancelar Venta)"), React.createElement(Button, { bsStyle: "success", onClick: this.registrarVenta }, "+ (Registrar Venta)"))), React.createElement("img", { src: "img/gauge.png" }), React.createElement(Chart, { chartType: this.state.GaugeChartData.chartType, data: [['Label', 'Value'], ['Memory', 80], ['CPU', 55], ['Network', 68]], options: this.state.GaugeChartData.options, graph_id: this.state.GaugeChartData.div_id }), React.createElement(Chart, { chartType: this.state.BarChartData.chartType, data: [['Ventas', 'Cantidad', {
 	        role: 'style'
-	      }], ['Registradas', this.state.usuario.numVentasRegistradas, 'green'], ['Canceladas', this.state.usuario.numVentasCanceladas, '#ff1f00']], options: this.state.BarChartData.options, graph_id: this.state.BarChartData.div_id }))), React.createElement(Tab, { eventKey: 2, title: "Ranking" }, React.createElement("div", null, React.createElement("header", null, React.createElement(ButtonGroup, null, React.createElement(Button, { bsStyle: "danger", onClick: this.cancelarVenta }, "- (Cancelar Venta)"), React.createElement(Button, { bsStyle: "success", onClick: this.registrarVenta }, "+ (Registrar Venta)"))), React.createElement(ListGroup, { componentClass: "ul" }, React.createElement(FlipMove, null, this.state.users.map(function (user) {
+	      }], ['Registradas', this.state.usuario.numVentasRegistradas, 'green'], ['Canceladas', this.state.usuario.numVentasCanceladas, '#ff1f00']], options: this.state.BarChartData.options, graph_id: this.state.BarChartData.div_id }))), React.createElement(Tab, { eventKey: 2, title: "Ranking" }, React.createElement("div", null, React.createElement("header", null, React.createElement(ButtonGroup, null, React.createElement(Button, { bsStyle: "danger", onClick: this.cancelarVenta }, "- (Cancelar Venta)"), React.createElement(Button, { bsStyle: "success", onClick: this.registrarVenta }, "+ (Registrar Venta)"))), React.createElement(ListGroup, { componentClass: "ul" }, React.createElement(FlipMove, {
+	      duration: 1000 }, this.state.users.map(function (user) {
 	      return React.createElement(ListGroupItem, { key: user._id }, user.email, ": ", user.numVentasRegistradas, "(", user.numVentasCanceladas, ") Ventas");
 	    }))))), React.createElement(Tab, { eventKey: 3, title: "Chat" }, React.createElement(ButtonGroup, null, React.createElement(Button, null, "General"), React.createElement(Button, null, "Tips de Ventas"), React.createElement(Button, null, "Campañas"), React.createElement(Button, null, "Sucursal")), React.createElement(ListGroup, { componentClass: "ul" }, React.createElement(FlipMove, null, this.state.messages.map(function (message) {
 	      var sender = message.sentBy || dummyUser;

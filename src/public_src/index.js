@@ -21,7 +21,7 @@ var FormControl = require('react-bootstrap/lib/FormControl');
 var ListGroupItem = require('react-bootstrap/lib/ListGroupItem');
 var Button = require('react-bootstrap/lib/Button');
 var ButtonGroup = require('react-bootstrap/lib/ButtonGroup');
-var Glyphicon = require('react-bootstrap/lib/Glyphicon');
+//var Glyphicon = require('react-bootstrap/lib/Glyphicon');
 var ControlLabel = require('react-bootstrap/lib/ControlLabel');
 var Grid = require('react-bootstrap/lib/Grid');
 var Row = require('react-bootstrap/lib/Row');
@@ -160,11 +160,32 @@ const ChatApp = React.createClass({
       query: {
         $sort: {
           numVentasRegistradas: -1
+        },
+        $limit: -1
+      }
+    }).then(page => {
+//      debugger;
+      this.setState({users: page.data});
+    });
+
+    // Listen to new users so we can show them in real-time    
+    userService.on('created', () => userService.find({
+      query: {
+        $sort: {
+          numVentasRegistradas: -1
+        },
+        $limit: -1
+      }
+    }).then(page => {
+      this.setState({users: page.data});
+      for (var aUser of page.data) {
+        if (aUser._id === this.state.usuario._id) {
+          this.setState({usuario: aUser});
+          //                debugger;
+          break;
         }
       }
-    }).then(page => this.setState({users: page.data}));
-    // Listen to new users so we can show them in real-time
-    userService.on('created', user => this.setState({users: this.state.users.concat(user)}));
+    }));
 
     // Find the last 10 messages
     messageService.find({
@@ -201,10 +222,11 @@ const ChatApp = React.createClass({
       query: {
         $sort: {
           numVentasRegistradas: -1
-        }
+        },
+        $limit: -1
       }
     }).then(page => {
-      //        debugger;
+//              debugger;
       this.setState({users: page.data});
       for (var aUser of page.data) {
         if (aUser._id === this.state.usuario._id) {
@@ -231,12 +253,12 @@ const ChatApp = React.createClass({
     return <div id="app">
       <LogoutButton/>
       <PageHeader>
-        Cardif CIMA 1056
+        Cardif CIMA
       </PageHeader>
       {this.state.usuario.email}
       : {this.state.usuario.numVentasRegistradas}
       ({this.state.usuario.numVentasCanceladas})
-      <Tabs defaultActiveKey={1} id='mainTabs'>
+      <Tabs defaultActiveKey={2} id='mainTabs'>
         <Tab eventKey={1} title="Registro">
           <div>
             <header>
@@ -290,7 +312,8 @@ const ChatApp = React.createClass({
               </ButtonGroup>
             </header>
             <ListGroup componentClass="ul">
-              <FlipMove>
+              <FlipMove
+                duration={1000}>
                 {this.state.users.map(user => <ListGroupItem key={user._id}>
                   {user.email}
                   : {user.numVentasRegistradas}
