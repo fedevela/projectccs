@@ -22,11 +22,12 @@ module.exports = function(options) {
 
     var numVentasRegistradas = user.numVentasRegistradas || 0;
     var numVentasCanceladas = user.numVentasCanceladas || 0;
+
     if (hook.data.registroVentaTipo === 'crear'){
       numVentasRegistradas = numVentasRegistradas + 1;
     } else if (hook.data.registroVentaTipo === 'cancelar'){
       numVentasRegistradas = numVentasRegistradas - 1;
-      numVentasCanceladas = numVentasCanceladas + 1;      
+      numVentasCanceladas = numVentasCanceladas + 1;
     }
 //    console.log('registrando venta 4 hook ');
 //    console.log('registrando venta 4:1' + hook.params.user);

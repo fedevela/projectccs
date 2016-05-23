@@ -231,7 +231,7 @@ const ChatApp = React.createClass({
     return <div id="app">
       <LogoutButton/>
       <PageHeader>
-        Cardif CIMA 1308
+        Cardif CIMA
       </PageHeader>
       {this.state.usuario.email}
       : {this.state.usuario.numVentasRegistradas}
@@ -240,12 +240,12 @@ const ChatApp = React.createClass({
         <Tab eventKey={1} title="Registro">
           <div>
             <header>
-              <ButtonGroup vertical>
-                <Button bsStyle="success" onClick={this.registrarVenta}>
-                  + (Registrar Venta)
-                </Button>
+              <ButtonGroup>
                 <Button bsStyle="danger" onClick={this.cancelarVenta}>
                   - (Cancelar Venta)
+                </Button>
+                <Button bsStyle="success" onClick={this.registrarVenta}>
+                  + (Registrar Venta)
                 </Button>
               </ButtonGroup>
             </header>
@@ -280,12 +280,12 @@ const ChatApp = React.createClass({
         <Tab eventKey={2} title="Ranking">
           <div>
             <header>
-              <ButtonGroup vertical>
-                <Button bsStyle="success" onClick={this.registrarVenta}>
-                  + (Registrar Venta)
-                </Button>
+              <ButtonGroup>
                 <Button bsStyle="danger" onClick={this.cancelarVenta}>
                   - (Cancelar Venta)
+                </Button>
+                <Button bsStyle="success" onClick={this.registrarVenta}>
+                  + (Registrar Venta)
                 </Button>
               </ButtonGroup>
             </header>
@@ -301,6 +301,20 @@ const ChatApp = React.createClass({
           </div>
         </Tab>
         <Tab eventKey={3} title="Chat">
+          <ButtonGroup>
+            <Button>
+              General
+            </Button>
+            <Button>
+              Tips de Ventas
+            </Button>
+            <Button>
+              Campañas
+            </Button>
+            <Button>
+              Sucursal
+            </Button>
+          </ButtonGroup>
           <ListGroup componentClass="ul">
             <FlipMove>
               {this.state.messages.map(message => {
