@@ -228,6 +228,7 @@ const ChatApp = React.createClass({
   },
 
   registrarVenta(ev) {
+    debugger;
     app.service('servicioRegistroVentas').create({registroVentaTipo: "crear"});
     ev.preventDefault();
   },
