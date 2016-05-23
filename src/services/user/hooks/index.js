@@ -1,6 +1,7 @@
 'use strict';
 
 const randomUserImage = require('./randomUserImage');
+const randomUserImageAfter = require('./randomUserImageAfter');
 
 //const gravatar = require('./gravatar');
 
@@ -43,8 +44,8 @@ exports.before = {
 
 exports.after = {
   all: [hooks.remove('password')],
-  find: [],
-  get: [],
+  find: [randomUserImageAfter()],
+  get: [randomUserImageAfter()],
   create: [],
   update: [],
   patch: [],

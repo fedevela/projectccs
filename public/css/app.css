@@ -28,3 +28,21 @@
 .list-group-item {
     padding: 1px 3px !important;
 }
+
+.indicePosicionClass {
+  font-size: x-large;
+  font-weight: bold;
+  color: #333333;
+  width: 1.5em;
+  text-align: right;
+}
+
+.rankingTable{
+  vertical-align: bottom;
+}
+
+.messageDateClass{
+  margin-left: 1em;
+  font-size: smaller;
+  float: right;
+}

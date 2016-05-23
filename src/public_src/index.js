@@ -164,11 +164,11 @@ const ChatApp = React.createClass({
         $limit: -1
       }
     }).then(page => {
-//      debugger;
+      //      debugger;
       this.setState({users: page.data});
     });
 
-    // Listen to new users so we can show them in real-time    
+    // Listen to new users so we can show them in real-time
     userService.on('created', () => userService.find({
       query: {
         $sort: {
@@ -216,7 +216,7 @@ const ChatApp = React.createClass({
         $limit: -1
       }
     }).then(page => {
-//              debugger;
+      //              debugger;
       this.setState({users: page.data});
       for (var aUser of page.data) {
         if (aUser._id === this.state.usuario._id) {
@@ -228,7 +228,7 @@ const ChatApp = React.createClass({
   },
 
   registrarVenta(ev) {
-    debugger;
+    //    debugger;
     app.service('servicioRegistroVentas').create({registroVentaTipo: "crear"});
     ev.preventDefault();
   },
@@ -240,14 +240,14 @@ const ChatApp = React.createClass({
 
   render() {
     //      debugger;
+    var indicePosicion = 0;
     return <div id="app">
       <LogoutButton/>
       <PageHeader>
         Cardif CIMA
       </PageHeader>
       {this.state.usuario.email}
-      : {this.state.usuario.numVentasRegistradas}
-      ({this.state.usuario.numVentasCanceladas})
+      : {this.state.usuario.numVentasRegistradas} Ventas
       <Tabs defaultActiveKey={2} id='mainTabs'>
         <Tab eventKey={1} title="Registro">
           <div>
@@ -301,16 +301,28 @@ const ChatApp = React.createClass({
                 </Button>
               </ButtonGroup>
             </header>
-            <ListGroup componentClass="ul">
-              <FlipMove
-                duration={1000}>
-                {this.state.users.map(user => <ListGroupItem key={user._id}>
-                  {user.email}
-                  : {user.numVentasRegistradas}
-                  ({user.numVentasCanceladas}) Ventas
-                </ListGroupItem>)}
+
+            <main className="chat flex flex-column flex-1 clear">
+              <FlipMove duration={1000}>
+                {this.state.users.map(user => {
+                  var theProfileImg = user.profileImg || PLACEHOLDER;
+                  indicePosicion++;
+                  return <div className="message flex flex-row rankingTable" key={user._id}>
+                    <div className="indicePosicionClass">{indicePosicion}.</div>
+                    <img src={theProfileImg} alt={user.email} className="avatar"/>
+                    <div className="message-wrapper">
+                      <p className="message-header">
+                        <span className="username font-600">{user.email}</span>
+                      </p>
+                      <p className="message-content font-300">
+                        {user.numVentasRegistradas} Ventas
+                      </p>
+                    </div>
+                  </div>;
+                })}
               </FlipMove>
-            </ListGroup>
+            </main>
+
           </div>
         </Tab>
         <Tab eventKey={3} title="Chat">
@@ -328,37 +340,29 @@ const ChatApp = React.createClass({
               Sucursal
             </Button>
           </ButtonGroup>
-          
-          
-          
-      <main className="chat flex flex-column flex-1 clear">
-              <FlipMove>
-        {this.state.messages.map(message =>{
-          var theProfileImg = message.sentBy.profileImg || PLACEHOLDER;
-          return <div className="message flex flex-row" key={message._id}>
-      <img src={theProfileImg} alt={message.sentBy.email} className="avatar" />
-      <div className="message-wrapper">
-        <p className="message-header">
-          <span className="username font-600">{message.sentBy.email}</span>
-          <span className="sent-date font-300">
-            {moment(message.createdAt).format('MMM Do, hh:mm:ss')}
-          </span>
-        </p>
-        <p className="message-content font-300">
-          {message.text}
-        </p>
-      </div>
-    </div>;
-        }
-        )}
-    </FlipMove>
-    </main>
 
-      
-    
+          <main className="chat flex flex-column flex-1 clear">
+            <FlipMove>
+              {this.state.messages.map(message => {
+                var theProfileImg = message.sentBy.profileImg || PLACEHOLDER;
+                return <div className="message flex flex-row" key={message._id}>
+                  <img src={theProfileImg} alt={message.sentBy.email} className="avatar"/>
+                  <div className="message-wrapper">
+                    <p className="message-header">
+                      <span className="username font-600">{message.sentBy.email}</span>
+                      <span className="sent-date font-300 messageDateClass">
+                        {moment(message.createdAt).format('MMM Do, hh:mm:ss')}
+                      </span>
+                    </p>
+                    <p className="message-content font-300">
+                      {message.text}
+                    </p>
+                  </div>
+                </div>;
+              })}
+            </FlipMove>
+          </main>
 
-          
-  
           <footer>
             <FormMessages/>
           </footer>
