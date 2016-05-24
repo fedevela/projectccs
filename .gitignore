@@ -30,3 +30,5 @@ node_modules
 lib/
 /nbproject/private/
 /nbproject/
+data_old/
+public/MatterHorn.mov

@@ -305,14 +305,15 @@ const ChatApp = React.createClass({
             <main className="chat flex flex-column flex-1 clear">
               <FlipMove duration={1000}>
                 {this.state.users.map(user => {
+                  var theTruncatedEmail = user.email.replace(/@.+/i, "");
                   var theProfileImg = user.profileImg || PLACEHOLDER;
                   indicePosicion++;
                   return <div className="message flex flex-row rankingTable" key={user._id}>
                     <div className="indicePosicionClass">{indicePosicion}.</div>
-                    <img src={theProfileImg} alt={user.email} className="avatar"/>
+                    <img src={theProfileImg} alt={theTruncatedEmail} className="avatar"/>
                     <div className="message-wrapper">
                       <p className="message-header">
-                        <span className="username font-600">{user.email}</span>
+                        <span className="username font-600">{theTruncatedEmail}</span>
                       </p>
                       <p className="message-content font-300">
                         {user.numVentasRegistradas} Ventas
@@ -344,14 +345,15 @@ const ChatApp = React.createClass({
           <main className="chat flex flex-column flex-1 clear">
             <FlipMove>
               {this.state.messages.map(message => {
-//                debugger;
                 var theUser = message.sentBy || dummyUser;
                 var theProfileImg = theUser.profileImg || PLACEHOLDER;
+                var theTruncatedEmail = theUser.email.replace(/@.+/i, "");
+//                debugger;
                 return <div className="message flex flex-row" key={message._id}>
-                  <img src={theProfileImg} alt={theUser.email} className="avatar"/>
+                  <img src={theProfileImg} alt={theTruncatedEmail} className="avatar"/>
                   <div className="message-wrapper">
                     <p className="message-header">
-                      <span className="username font-600">{theUser.email}</span>
+                      <span className="username font-600">{theTruncatedEmail}</span>
                       <span className="sent-date font-300 messageDateClass">
                         {moment(message.createdAt).format('MMM Do, hh:mm:ss')}
                       </span>
