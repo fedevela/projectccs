@@ -28,6 +28,5 @@ node_modules
 .lock-wscript
 
 lib/
-data/
 /nbproject/private/
 /nbproject/

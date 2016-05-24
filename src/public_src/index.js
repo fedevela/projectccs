@@ -344,12 +344,14 @@ const ChatApp = React.createClass({
           <main className="chat flex flex-column flex-1 clear">
             <FlipMove>
               {this.state.messages.map(message => {
-                var theProfileImg = message.sentBy.profileImg || PLACEHOLDER;
+//                debugger;
+                var theUser = message.sentBy || dummyUser;
+                var theProfileImg = theUser.profileImg || PLACEHOLDER;
                 return <div className="message flex flex-row" key={message._id}>
-                  <img src={theProfileImg} alt={message.sentBy.email} className="avatar"/>
+                  <img src={theProfileImg} alt={theUser.email} className="avatar"/>
                   <div className="message-wrapper">
                     <p className="message-header">
-                      <span className="username font-600">{message.sentBy.email}</span>
+                      <span className="username font-600">{theUser.email}</span>
                       <span className="sent-date font-300 messageDateClass">
                         {moment(message.createdAt).format('MMM Do, hh:mm:ss')}
                       </span>
