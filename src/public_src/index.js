@@ -41,6 +41,8 @@ const dummyUser = {
   email: 'Anonymous'
 };
 
+//data= {[ { value: 30, high: 50, low:0, unitHeight: 3, barItemTop: 0, barInterval: 2}, { value: 10, high: 50, low:0, unitHeight: 3, barItemTop: 0, barInterval: 2}, { value: 25, high: 50, low:0, unitHeight: 3, barItemTop: 0, barInterval: 2}, { value: 40, high: 50, low:0, unitHeight: 3, barItemTop: 0, barInterval: 2}, { value: 2, high: 50, low:0, unitHeight: 3, barItemTop: 0, barInterval: 2}, { value: 5, high: 50, low:0, unitHeight: 3, barItemTop: 0, barInterval: 2}, { value: 33, high: 50, low:0, unitHeight: 3, barItemTop: 0, barInterval: 2}, { value: 13, high: 50, low:0, unitHeight: 3, barItemTop: 0, barInterval: 2}, { value: 49, high: 50, low:0, unitHeight: 3, barItemTop: 0, barInterval: 2}, { value: 32, high: 50, low:0, unitHeight: 3, barItemTop: 0, barInterval: 2}, { value: 0, high: 50, low:0, unitHeight: 3, barItemTop: 0, barInterval: 2}, { value: 0, high: 50, low:0, unitHeight: 3, barItemTop: 0, barInterval: 2}, { value: 0, high: 50, low:0, unitHeight: 3, barItemTop: 0, barInterval: 2}, { value: 0, high: 50, low:0, unitHeight: 3, barItemTop: 0, barInterval: 2}, { value: 0, high: 50, low:0, unitHeight: 3, barItemTop: 0, barInterval: 2}, { value: 0, high: 50, low:0, unitHeight: 3, barItemTop: 0, barInterval: 2}, { value: 0, high: 50, low:0, unitHeight: 3, barItemTop: 0, barInterval: 2}, { value: 0, high: 50, low:0, unitHeight: 3, barItemTop: 0, barInterval: 2}, { value: 0, high: 50, low:0, unitHeight: 3, barItemTop: 0, barInterval: 2}, { value: 0, high: 50, low:0, unitHeight: 3, barItemTop: 0, barInterval: 2}, { value: 0, high: 50, low:0, unitHeight: 3, barItemTop: 0, barInterval: 2},{ value: 0, high: 50, low:0, unitHeight: 3, barItemTop: 0, barInterval: 2}, { value: 0, high: 50, low:0, unitHeight: 3, barItemTop: 0, barInterval: 2}, { value: 0, high: 50, low:0, unitHeight: 3, barItemTop: 0, barInterval: 2}, { value: 0, high: 50, low:0, unitHeight: 3, barItemTop: 0, barInterval: 2}, { value: 0, high: 50, low:0, unitHeight: 3, barItemTop: 0, barInterval: 2}, { value: 0, high: 50, low:0, unitHeight: 3, barItemTop: 0, barInterval: 2}, { value: 0, high: 50, low:0, unitHeight: 3, barItemTop: 0, barInterval: 2}, { value: 0, high: 50, low:0, unitHeight: 3, barItemTop: 0, barInterval: 2}, { value: 0, high: 50, low:0, unitHeight: 3, barItemTop: 0, barInterval: 2}, { value: 0, high: 50, low:0, unitHeight: 3, barItemTop: 0, barInterval: 2}, { value: 0, high: 50, low:0, unitHeight: 3, barItemTop: 0, barInterval: 2}, { value: 0, high: 50, low:0, unitHeight: 3, barItemTop: 0, barInterval: 2}, { value: 0, high: 50, low:0, unitHeight: 3, barItemTop: 0, barInterval: 2}, { value: 0, high: 50, low:0, unitHeight: 3, barItemTop: 0, barInterval: 2}, { value: 0, high: 50, low:0, unitHeight: 3, barItemTop: 0, barInterval: 2}, { value: 0, high: 50, low:0, unitHeight: 3, barItemTop: 0, barInterval: 2}, { value: 0, high: 50, low:0, unitHeight: 3, barItemTop: 0, barInterval: 2}, { value: 0, high: 50, low:0, unitHeight: 3, barItemTop: 0, barInterval: 2}, { value: 0, high: 50, low:0, unitHeight: 3, barItemTop: 0, barInterval: 2}, { value: 0, high: 50, low:0, unitHeight: 3, barItemTop: 0, barInterval: 2}, { value: 0, high: 50, low:0, unitHeight: 3, barItemTop: 0, barInterval: 2} ]};
+
 const FormMessages = React.createClass({
   getInitialState() {
     return {value: ''};
@@ -262,6 +264,7 @@ const ChatApp = React.createClass({
               </ButtonGroup>
             </header>
             <img src="img/gauge.png"/>
+            {/*
             <Chart chartType={this.state.GaugeChartData.chartType} data={[
               [
                 'Label', 'Value'
@@ -274,7 +277,7 @@ const ChatApp = React.createClass({
               ],
               ['Network', 68]
             ]} options={this.state.GaugeChartData.options} graph_id={this.state.GaugeChartData.div_id}/>
-
+            */}
             <Chart chartType={this.state.BarChartData.chartType} data={[
               [
                 'Ventas',
